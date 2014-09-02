@@ -1,0 +1,28 @@
+{
+    "name": "purescript-webaudio",
+    "version": "0.0.0",
+    "description": "A PureScript wrapper for the WebAudio API.",
+    "authors": [
+        "Chris Waterson <waterson@maubi.net>"
+    ],
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "purescript-arrays":               "*",
+        "purescript-foldable-traversable": "*",
+        "purescript-lists":                "*",
+        "purescript-math":                 "*",
+        "purescript-maybe":                "*",
+        "purescript-random":               "*",
+        "purescript-tuples":               "*",
+        "purescript-strings":              "*",
+        "purescript-simple-dom":           "waterson/purescript-simple-dom"
+    }
+}
