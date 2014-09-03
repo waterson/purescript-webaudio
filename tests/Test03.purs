@@ -1,7 +1,10 @@
 module Test03 where
 
 import Control.Monad.Eff
-import Audio.WebAudio
+import Audio.WebAudio.Types
+import Audio.WebAudio.AudioContext
+import Audio.WebAudio.AudioBufferSourceNode
+import Audio.WebAudio.DestinationNode
 import Data.DOM.Simple.Types
 import Data.DOM.Simple.Ajax
 import Data.DOM.Simple.Events
@@ -19,7 +22,7 @@ play :: forall ev wau eff. XMLHttpRequest -- |^ the request object
      -> DOMEvent -- |^ the load event
      -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 play req ev = do
-  ctx <- makeWebAudioContext
+  ctx <- makeAudioContext
   src <- createBufferSource ctx
   dst <- destination ctx
   connect src dst
