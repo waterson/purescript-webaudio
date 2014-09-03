@@ -7,7 +7,7 @@
     "author": { "name": "Chris Waterson", "email": "waterson@maubi.net" },
     "license": "MIT",
     "devDependencies": {
-        "grunt":            "*",
+        "grunt":            "~0.4.2",
         "grunt-purescript": "*",
         "http-server":      "*"
     }

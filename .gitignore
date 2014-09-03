@@ -1,3 +1,5 @@
+*~
+.psci
 bower_components
 node_modules
-dist
+output
