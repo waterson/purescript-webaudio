@@ -18,6 +18,14 @@ foreign import createOscillator
   \}" :: forall wau eff. AudioContext
       -> (Eff (wau :: WebAudio | eff) OscillatorNode)
 
+foreign import createGain
+  "function createGain(ctx) { \n\
+  \  return function() { \n\
+  \    return ctx.createGain(); \n\
+  \  }; \n\
+  \}" :: forall wau eff. AudioContext
+      -> (Eff (wau :: WebAudio | eff) GainNode)
+
 foreign import createMediaElementSource
   "function createMediaElementSource(ctx) { \n\
   \  return function(elt) { \n\

@@ -20,34 +20,31 @@ readOscillatorType "sawtooth" = Sawtooth
 readOscillatorType "triangle" = Triangle
 readOscillatorType "custom"   = Custom
 
-frequency :: forall wau eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) Number)
-frequency = unsafeGetAudioParamValue "frequency"
-
-setFrequency :: forall wau eff. OscillatorNode -> Number -> (Eff (wau :: WebAudio | eff) Unit)
-setFrequency = unsafeSetAudioParamValue "frequency"
+frequency :: forall wau eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+frequency = unsafeGetProp "frequency"
 
 oscillatorType :: forall wau eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n
 
-setOscillatorType :: forall wau eff. OscillatorNode -> OscillatorType -> (Eff (wau :: WebAudio | eff) Unit)
-setOscillatorType n t = unsafeSetProp "type" n $ show t
+setOscillatorType :: forall wau eff. OscillatorType -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setOscillatorType t n = unsafeSetProp "type" n $ show t
 
 foreign import startOscillator
-  "function startOscillator(n) { \n\
-  \  return function(when) { \n\
+  "function startOscillator(when) { \n\
+  \  return function(n) { \n\
   \    return function() { \n\
   \      return n[n.start ? 'start' : 'noteOn'](when); \n\
   \    }; \n\
   \  }; \n\
-  \}" :: forall wau eff. OscillatorNode -> Number -> (Eff (wau :: WebAudio | eff) Unit)
+  \}" :: forall wau eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
 
 foreign import stopOscillator
-  "function stopOscillator(n) { \n\
-  \  return function(when) { \n\
+  "function stopOscillator(when) { \n\
+  \  return function(n) { \n\
   \    return function() { \n\
   \      return n[n.stop ? 'stop' : 'noteOff'](when); \n\
   \    }; \n\
   \  }; \n\
-  \}" :: forall wau eff. OscillatorNode -> Number -> (Eff (wau :: WebAudio | eff) Unit)
+  \}" :: forall wau eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
 
 instance audioNodeOscillatorNode :: AudioNode OscillatorNode
