@@ -10,7 +10,7 @@ import Data.DOM.Simple.Ajax
 import Data.DOM.Simple.Events
 import Data.Maybe
 
-main :: forall wau eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
   open "GET" "/html/siren.wav" req
@@ -18,7 +18,7 @@ main = do
   addProgressEventListener ProgressLoadEvent (play req) req
   send req
 
-play :: forall ev wau eff. XMLHttpRequest -- |^ the request object
+play :: forall eff. XMLHttpRequest -- |^ the request object
      -> DOMEvent -- |^ the load event
      -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 play req ev = do
@@ -29,11 +29,11 @@ play req ev = do
   audioData <- response req
   decodeAudioData ctx audioData $ play0 src
 
-play0 :: forall wau eff. AudioBufferSourceNode
+play0 :: forall eff. AudioBufferSourceNode
       -> (Maybe AudioBuffer)
       -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 play0 src (Just buf) = do
-  setBuffer src buf
-  startBufferSource src 0
+  setBuffer buf src
+  startBufferSource 0 src
 
 play0 _ Nothing = return unit

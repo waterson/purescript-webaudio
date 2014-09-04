@@ -9,9 +9,9 @@
 
 ### Values
 
-    setBuffer :: forall wau eff. AudioBufferSourceNode -> AudioBuffer -> Eff (wau :: WebAudio | eff) Unit
+    setBuffer :: forall wau eff. AudioBuffer -> AudioBufferSourceNode -> Eff (wau :: WebAudio | eff) Unit
 
-    startBufferSource :: forall wau eff. AudioBufferSourceNode -> Number -> Eff (wau :: WebAudio | eff) Unit
+    startBufferSource :: forall wau eff. Number -> AudioBufferSourceNode -> Eff (wau :: WebAudio | eff) Unit
 
 
 ## Module Audio.WebAudio.AudioContext
