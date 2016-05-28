@@ -1,6 +1,6 @@
 /* jshint maxparams: false */
 /* global exports, XMLHttpRequest */
-use strict;
+"use strict";
 
 // module Audio.WebAudio.Utils
 
