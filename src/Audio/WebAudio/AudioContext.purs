@@ -3,8 +3,10 @@ module Audio.WebAudio.AudioContext where
 import Prelude
 import Control.Monad.Eff
 import Data.Maybe
+import Data.DOM.Simple.Ajax
 import Audio.WebAudio.Types
 import Audio.WebAudio.Utils
+
 
 foreign import makeAudioContext
   :: forall wau eff. (Eff (wau :: WebAudio | eff) AudioContext)
@@ -33,7 +35,7 @@ foreign import currentTime
 
 foreign import decodeAudioData
   :: forall wau e f. AudioContext
-  -> String
+  -> ArrayBuffer
   -> (Maybe AudioBuffer -> Eff (wau :: WebAudio | e) Unit)
   -> (Eff (wau :: WebAudio | f) Unit)
 
