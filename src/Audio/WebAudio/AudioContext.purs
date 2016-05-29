@@ -34,9 +34,11 @@ foreign import currentTime
   -> (Eff (wau :: WebAudio | eff) Number)
 
 foreign import decodeAudioData
-  :: forall wau e f. AudioContext
+  :: forall wau e f.
+     AudioContext
   -> ArrayBuffer
-  -> (Maybe AudioBuffer -> Eff (wau :: WebAudio | e) Unit)
+  -> (AudioBuffer -> Eff (wau :: WebAudio | e) Unit) -- sucesss
+  -> (Eff (wau :: WebAudio | e) Unit) -- failure
   -> (Eff (wau :: WebAudio | f) Unit)
 
 foreign import createBufferSource

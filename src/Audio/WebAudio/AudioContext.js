@@ -39,13 +39,17 @@ exports.currentTime = function(cx) {
 
 exports.decodeAudioData = function(cx) {
   return function(audioData) {
-    return function(cb) {
-      return function() {
-        cx.decodeAudioData(audioData,
-          function(data) {
-            cb(new PS.Data_Maybe.Just(data))(); },
-          function() {
-            cb(PS.Data_Maybe.Nothing.value)(); });
+    return function(success) {
+      return function(failure) {
+        return function() {
+          cx.decodeAudioData(audioData,
+            function(data) {
+              success(data)();
+            },
+            function() {
+              failure();
+            });
+        };
       };
     };
   };
