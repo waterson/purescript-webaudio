@@ -46,8 +46,8 @@ exports.decodeAudioData = function(cx) {
             function(data) {
               success(data)();
             },
-            function() {
-              failure();
+            function(e) {
+              failure(e.err);
             });
         };
       };
