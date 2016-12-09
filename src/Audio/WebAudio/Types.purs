@@ -13,3 +13,9 @@ foreign import data OscillatorNode :: *
 
 class AudioNode n
 
+instance audioNodeAudioBufferSourceNode :: AudioNode AudioBufferSourceNode
+instance audioNodeMediaElementAudioSourceNode :: AudioNode MediaElementAudioSourceNode
+instance audioNodeGainNode :: AudioNode GainNode
+instance audioNodeDestinationNode :: AudioNode DestinationNode
+instance audioNodeOscillatorNode :: AudioNode OscillatorNode
+

@@ -1,14 +1,17 @@
 {
-    "name": "purescript-webaudio",
-    "version": "0.0.0",
-    "description": "A PureScript wrapper for the HTML5 Web Audio API",
-    "main": "",
-    "private": true,
-    "author": { "name": "Chris Waterson", "email": "waterson@maubi.net" },
-    "license": "MIT",
-    "devDependencies": {
-        "grunt":            "~0.4.2",
-        "grunt-purescript": "*",
-        "http-server":      "*"
-    }
+  "name": "purescript-webaudio",
+  "version": "0.0.0",
+  "description": "A PureScript wrapper for the HTML5 Web Audio API",
+  "main": "",
+  "private": true,
+  "author": {
+    "name": "Chris Waterson",
+    "email": "waterson@maubi.net"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-purescript": "*",
+    "http-server": "*"
+  }
 }

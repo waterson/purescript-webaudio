@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "description": "A PureScript wrapper for the WebAudio API.",
     "authors": [
-        "Chris Waterson <waterson@maubi.net>"
+        "Chris Waterson <waterson@maubi.net>",
+        "Sean Seefried <sean.seefried@gmail.com>"
     ],
     "license": "MIT",
     "private": true,
@@ -23,6 +24,7 @@
         "purescript-random":               "*",
         "purescript-tuples":               "*",
         "purescript-strings":              "*",
-        "purescript-simple-dom":           "waterson/purescript-simple-dom"
+        "purescript-eff":                  "*",
+        "purescript-simple-dom":           "aktowns/purescript-simple-dom#c3a864a0a6f78bb7341467d9bedfb8fcc056caba"
     }
 }
