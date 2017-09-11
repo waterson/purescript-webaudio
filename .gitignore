@@ -1,4 +1,5 @@
 *~
+.psc-ide-port
 .psci
 bower_components
 node_modules

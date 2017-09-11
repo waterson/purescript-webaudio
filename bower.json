@@ -1,30 +1,33 @@
 {
-    "name": "purescript-webaudio",
-    "version": "0.0.0",
-    "description": "A PureScript wrapper for the WebAudio API.",
-    "authors": [
-        "Chris Waterson <waterson@maubi.net>",
-        "Sean Seefried <sean.seefried@gmail.com>"
-    ],
-    "license": "MIT",
-    "private": true,
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "purescript-arrays":               "*",
-        "purescript-foldable-traversable": "*",
-        "purescript-lists":                "*",
-        "purescript-math":                 "*",
-        "purescript-maybe":                "*",
-        "purescript-random":               "*",
-        "purescript-tuples":               "*",
-        "purescript-strings":              "*",
-        "purescript-eff":                  "*",
-        "purescript-simple-dom":           "aktowns/purescript-simple-dom#c3a864a0a6f78bb7341467d9bedfb8fcc056caba"
-    }
+  "name": "purescript-webaudio",
+  "version": "0.0.0",
+  "description": "A PureScript wrapper for the WebAudio API.",
+  "authors": [
+    "Chris Waterson <waterson@maubi.net>",
+    "Sean Seefried <sean.seefried@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-arrays": "^4.2.0",
+    "purescript-foldable-traversable": "^3.6.0",
+    "purescript-lists": "^4.10.0",
+    "purescript-math": "^2.1.0",
+    "purescript-maybe": "^3.0.0",
+    "purescript-tuples": "^4.1.0",
+    "purescript-strings": "^3.3.1",
+    "purescript-eff": "^3.1.0",
+    "purescript-arraybuffer-types": "^1.0.0",
+    "purescript-dom": "^4.8.2",
+    "purescript-js-timers": "^3.0.0",
+    "purescript-partial": "^1.2.1",
+    "purescript-console": "^3.0.0"
+  }
 }

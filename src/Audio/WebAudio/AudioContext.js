@@ -37,6 +37,12 @@ exports.currentTime = function(cx) {
   };
 };
 
+exports.sampleRate = function(cx) {
+  return function() {
+    return cx.sampleRate;
+  };
+};
+
 exports.decodeAudioData = function(cx) {
   return function(audioData) {
     return function(success) {
@@ -74,6 +80,3 @@ exports.connect = function(_) {
     };
   };
 };
-
-
-

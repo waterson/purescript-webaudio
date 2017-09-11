@@ -5,10 +5,10 @@ import Audio.WebAudio.Types
 import Audio.WebAudio.AudioContext
 import Audio.WebAudio.AudioBufferSourceNode
 import Audio.WebAudio.DestinationNode
-import Data.DOM.Simple.Types
-import Data.DOM.Simple.Ajax
-import Data.DOM.Simple.Events
-import Data.Maybe
+-- import Data.DOM.Simple.Types
+-- import Data.DOM.Simple.Ajax
+-- import Data.DOM.Simple.Events
+import Data.Maybe (fromJust)
 
 main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 main = do

@@ -1,9 +1,9 @@
 module Audio.WebAudio.Oscillator where
 
 import Prelude
-import Control.Monad.Eff
-import Audio.WebAudio.Types
-import Audio.WebAudio.Utils
+import Control.Monad.Eff (Eff)
+import Audio.WebAudio.Types (AudioParam, OscillatorNode, WebAudio)
+import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 
 data OscillatorType = Sine | Square | Sawtooth | Triangle | Custom
 
@@ -20,16 +20,16 @@ readOscillatorType "square"   = Square
 readOscillatorType "sawtooth" = Sawtooth
 readOscillatorType "triangle" = Triangle
 readOscillatorType "custom"   = Custom
+readOscillatorType _          = Sine
 
-frequency :: forall wau eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 
-oscillatorType :: forall wau eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
+oscillatorType :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n
 
-setOscillatorType :: forall wau eff. OscillatorType -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setOscillatorType :: ∀ eff. OscillatorType -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
 setOscillatorType t n = unsafeSetProp "type" n $ show t
 
-foreign import startOscillator :: forall wau eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
-foreign import stopOscillator :: forall wau eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
-
+foreign import startOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import stopOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
