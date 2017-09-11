@@ -4,8 +4,8 @@
   "description": "A PureScript wrapper for the HTML5 Web Audio API",
   "main": "",
   "scripts": { "server": "python -m SimpleHTTPServer 8000"
-             , "test01": "cp test/Test01.purs src/ && pulp browserify -m Test01 --optimise --to html/test01.js && rm src/Test01.purs"
-             , "test02": "cp test/Test02.purs src/ && pulp browserify -m Test02 --optimise --to html/test02.js && rm src/Test02.purs"},
+             , "Test01": "cp test/Test01.purs src/ && pulp browserify -m Test01 --optimise --to html/test01.js && rm src/Test01.purs"
+             , "Test02": "cp test/Test02.purs src/ && pulp browserify -m Test02 --optimise --to html/test02.js && rm src/Test02.purs"},
   "private": true,
   "author": {
     "name": "Chris Waterson",
