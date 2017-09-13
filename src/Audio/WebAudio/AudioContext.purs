@@ -49,7 +49,7 @@ foreign import decodeAudioData
      AudioContext
   -> ArrayBuffer
   -> (AudioBuffer -> Eff (wau :: WebAudio | eff) Unit) -- sucesss
-  -> (String -> Eff (wau :: WebAudio, console :: CONSOLE | eff) Unit) -- failure
+  -> (String -> Eff (console :: CONSOLE | eff) Unit) -- failure
   -> (Eff (wau :: WebAudio | f) Unit)
 
 foreign import createBufferSource

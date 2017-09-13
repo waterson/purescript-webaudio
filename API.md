@@ -30,7 +30,12 @@
 
     currentTime :: forall wau eff. AudioContext -> Eff (wau :: WebAudio | eff) Number
 
-    decodeAudioData :: forall wau e f. AudioContext -> String -> (Maybe AudioBuffer -> Eff (wau :: WebAudio | e) Unit) -> Eff (wau :: WebAudio | f) Unit
+    decodeAudioData :: forall wau e f
+                     . AudioContext
+                    -> String
+                    -> (AudioBuffer -> Eff (wau :: WebAudio | e) Unit)  -- success
+                    -> (String -> Eff (console :: CONSOLE | e) Unit) -- failure (warn, log, etc.)
+                    -> Eff (wau :: WebAudio | f) Unit
 
     destination :: forall wau eff. AudioContext -> Eff (wau :: WebAudio | eff) DestinationNode
 
