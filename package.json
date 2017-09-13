@@ -1,16 +1,26 @@
 {
   "name": "purescript-webaudio",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A PureScript wrapper for the HTML5 Web Audio API",
   "main": "",
   "scripts": { "server": "cd html/ && python -m SimpleHTTPServer 8000"
-             , "Test01": "cp test/Test01.purs src/ && pulp browserify -m Test01 --optimise --to html/test01.js && rm src/Test01.purs"
-             , "Test02": "cp test/Test02.purs src/ && pulp browserify -m Test02 --optimise --to html/test02.js && rm src/Test02.purs"},
+             , "Test01": "pulp browserify -m Test01 --include test:src --optimise --to html/test01.js"
+             , "Test02": "pulp browserify -m Test02 --include test:src --optimise --to html/test02.js"
+             , "Test03": "pulp browserify -m Test03 --include test:src --optimise --to html/test03.js"
+             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03"
+           },
   "private": true,
   "author": {
     "name": "Chris Waterson",
     "email": "waterson@maubi.net"
   },
+  "contributors": [
+    {
+      "name": "Alex Kelley",
+      "email": "",
+      "url": "https://github.com/adkelley"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
   }

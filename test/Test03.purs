@@ -1,22 +1,31 @@
 module Test03 where
 
-import Control.Monad.Eff
-import Audio.WebAudio.Types
-import Audio.WebAudio.AudioContext
-import Audio.WebAudio.AudioBufferSourceNode
-import Audio.WebAudio.DestinationNode
--- import Data.DOM.Simple.Types
--- import Data.DOM.Simple.Ajax
--- import Data.DOM.Simple.Events
-import Data.Maybe (fromJust)
+import Prelude
+
+import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
+import Audio.WebAudio.AudioContext (connect, createBufferSource, decodeAudioData, destination, makeAudioContext)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (warn)
+import DOM (DOM)
+import Data.ArrayBuffer.Types (ArrayBuffer)
+import Partial.Unsafe (unsafePartial)
+import SimpleDom (DOMEvent, HttpData(..), HttpMethod(..), ProgressEventType(..), XMLHttpRequest, addProgressEventListener, makeXMLHttpRequest, open, response, send, setResponseType)
+
+toArrayBuffer :: forall a. (HttpData a) -> ArrayBuffer
+toArrayBuffer hd =
+  unsafePartial
+    case hd of
+      (ArrayBufferData a) -> a
 
 main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
-  open "GET" "/html/siren.wav" req
+  open GET "siren.wav" req
   setResponseType "arraybuffer" req
   addProgressEventListener ProgressLoadEvent (play req) req
-  send req
+  send NoData req
+  pure unit
 
 play :: forall eff. XMLHttpRequest -- |^ the request object
      -> DOMEvent -- |^ the load event
@@ -27,13 +36,11 @@ play req ev = do
   dst <- destination ctx
   connect src dst
   audioData <- response req
-  decodeAudioData ctx audioData $ play0 src
+  decodeAudioData ctx (toArrayBuffer audioData) (play0 src) warn
 
 play0 :: forall eff. AudioBufferSourceNode
-      -> (Maybe AudioBuffer)
+      -> AudioBuffer
       -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
-play0 src (Just buf) = do
+play0 src buf = do
   setBuffer buf src
-  startBufferSource 0 src
-
-play0 _ Nothing = return unit
+  startBufferSource 0.0 src

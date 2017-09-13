@@ -1,4 +1,7 @@
-module Audio.WebAudio.Oscillator where
+module Audio.WebAudio.Oscillator
+  ( OscillatorType(..), readOscillatorType, frequency
+  , oscillatorType, setOscillatorType, startOscillator
+  , stopOscillator) where
 
 import Prelude
 import Control.Monad.Eff (Eff)

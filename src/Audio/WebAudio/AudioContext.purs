@@ -1,13 +1,17 @@
-module Audio.WebAudio.AudioContext where
+module Audio.WebAudio.AudioContext
+  ( makeAudioContext, createOscillator, createGain
+  , createMediaElementSource, destination, currentTime
+  , sampleRate, decodeAudioData, createBufferSource
+  , connect
+  ) where
 
 import Prelude
 
-import Data.ArrayBuffer.Types (ArrayBuffer)
-import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode
-                            , DestinationNode, GainNode, MediaElementAudioSourceNode
-                            , OscillatorNode, WebAudio)
+import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode, DestinationNode, GainNode, MediaElementAudioSourceNode, OscillatorNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE)
+import Data.ArrayBuffer.Types (ArrayBuffer)
 
 
 foreign import makeAudioContext
@@ -39,12 +43,13 @@ foreign import sampleRate
   :: ∀ eff. AudioContext
   -> (Eff (wau :: WebAudio | eff) Number)
 
+
 foreign import decodeAudioData
   :: ∀ eff f.
      AudioContext
   -> ArrayBuffer
   -> (AudioBuffer -> Eff (wau :: WebAudio | eff) Unit) -- sucesss
-  -> (String -> Eff (wau :: WebAudio | eff) Unit) -- failure
+  -> (String -> Eff (wau :: WebAudio, console :: CONSOLE | eff) Unit) -- failure
   -> (Eff (wau :: WebAudio | f) Unit)
 
 foreign import createBufferSource

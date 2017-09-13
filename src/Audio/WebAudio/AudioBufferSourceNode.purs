@@ -1,4 +1,5 @@
-module Audio.WebAudio.AudioBufferSourceNode where
+module Audio.WebAudio.AudioBufferSourceNode
+  (setBuffer, startBufferSource) where
 
 import Prelude
 import Control.Monad.Eff (Eff)
