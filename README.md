@@ -19,13 +19,21 @@ Note: If you make a change to `TestXX.purs` then run the script `npm run TestXX`
 
 Note: To run `Test03`, I ported some components from [purescript-simple-dom](https://github.com/aktowns/purescript-simple-dom). These are contained in the module `test/SimpleDom.*`
 
-## Changes
+## newlandsvalley proposed changes
+
+I think it is now possible, with the latest Aff, to make the __decodeAudioData__ function less clumsy.  At the moment it requires continuations in Eff for both success and failure.  However, Aff would allow a return type where you can actually get your hands on the AudioBuffer:
+ 
+    forall eff. Uint8Array -> Aff (wau :: WebAudio | eff) AudioBuffer
+    
+and so this means, if you're happy to work in Aff rather than Eff, AudioBuffers can be saved for later use and so on.
+
+## adkelley Changes 
 * Updated to work with `purs 0.11.x`
 * Updated tests to use `purescript-dom` and some components from `purescript-simple-dom`
 * Updated `testXX.html` files to run `testXX.js` implicitly after `window` object is loaded
 * Updated `API.md` to reflect `decodeAudioData` error handling change
 * Eliminated `gulp`, putting new build test scripts in `package.json`
 
-## ToDo:
+## adkelley ToDo:
 * Add further error handling options for `decodeAudioData` besides writing to console
 * Support for further nodes (e.g., ChannelSplitterNode), and interfaces
