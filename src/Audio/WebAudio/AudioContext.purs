@@ -1,7 +1,7 @@
 module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain
   , createMediaElementSource, destination, currentTime
-  , sampleRate, decodeAudioData, createBufferSource
+  , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
   , connect
   ) where
 
@@ -11,8 +11,9 @@ import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBu
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
+import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Compat (EffFnAff, fromEffFnAff)
 import Data.ArrayBuffer.Types (ArrayBuffer)
-
 
 foreign import makeAudioContext
   :: ∀ eff. (Eff (wau :: WebAudio | eff) AudioContext)
@@ -51,6 +52,21 @@ foreign import decodeAudioData
   -> (AudioBuffer -> Eff (wau :: WebAudio | eff) Unit) -- sucesss
   -> (String -> Eff (console :: CONSOLE | eff) Unit) -- failure
   -> (Eff (wau :: WebAudio | f) Unit)
+
+foreign import decodeAudioDataAsyncImpl
+  :: ∀ eff.
+     AudioContext
+  -> ArrayBuffer
+  -> EffFnAff (wau :: WebAudio | eff) AudioBuffer
+
+-- | decode the Audio Buffer asynchronously
+decodeAudioDataAsync
+  :: ∀ eff.
+     AudioContext
+  -> ArrayBuffer
+  -> Aff (wau :: WebAudio | eff) AudioBuffer
+decodeAudioDataAsync ctx =
+  fromEffFnAff <<< (decodeAudioDataAsyncImpl ctx)
 
 foreign import createBufferSource
   :: ∀ eff. AudioContext

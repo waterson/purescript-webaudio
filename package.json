@@ -7,7 +7,8 @@
              , "Test01": "pulp browserify -m Test01 --include test:src --optimise --to html/test01.js"
              , "Test02": "pulp browserify -m Test02 --include test:src --optimise --to html/test02.js"
              , "Test03": "pulp browserify -m Test03 --include test:src --optimise --to html/test03.js"
-             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03"
+             , "Test04": "pulp browserify -m Test04 --include test:src --optimise --to html/test04.js"
+             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03 && npm run Test04"
            },
   "private": true,
   "author": {
@@ -19,6 +20,11 @@
       "name": "Alex Kelley",
       "email": "",
       "url": "https://github.com/adkelley"
+    },
+    {
+      "name": "John Watson",
+      "email": "",
+      "url": "https://github.com/newlandsvalley"
     }
   ],
   "license": "MIT",

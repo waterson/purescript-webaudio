@@ -24,6 +24,7 @@
     "purescript-tuples": "^4.1.0",
     "purescript-strings": "^3.3.1",
     "purescript-eff": "^3.1.0",
+    "purescript-aff": "^4.0.0",
     "purescript-arraybuffer-types": "^1.0.0"
   },
   "devDependencies": {
@@ -31,6 +32,7 @@
     "purescript-js-timers": "^3.0.0",
     "purescript-partial": "^1.2.1",
     "purescript-console": "^3.0.0",
-    "purescript-psci-support": "^3.0.0"
+    "purescript-psci-support": "^3.0.0",
+    "purescript-affjax": "^5.0.0"
   }
 }

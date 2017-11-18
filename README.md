@@ -19,15 +19,13 @@ Note: If you make a change to `TestXX.purs` then run the script `npm run TestXX`
 
 Note: To run `Test03`, I ported some components from [purescript-simple-dom](https://github.com/aktowns/purescript-simple-dom). These are contained in the module `test/SimpleDom.*`
 
-## newlandsvalley proposed changes
+## newlandsvalley changes
 
-I think it is now possible, with the latest Aff, to make the __decodeAudioData__ function less clumsy.  At the moment it requires continuations in Eff for both success and failure.  However, Aff would allow a return type where you can actually get your hands on the AudioBuffer:
- 
-    forall eff. Uint8Array -> Aff (wau :: WebAudio | eff) AudioBuffer
-    
-and so this means, if you're happy to work in Aff rather than Eff, AudioBuffers can be saved for later use and so on.
+* Added __decodeAudioDataAsync__ to AudioContext.  This runs in Aff not Eff but has the advantage that audio buffers can be returned directly.  This, of course, introduces a dependency on Aff 4.0.0 and requires users to lift the original Eff functions into Aff if they wish to use it.  I hope that this overhead should not be too restrictive given that a natural way to load sound resources is via Aff anyway.
+* Added Test04 to illustrate basic usage.  devDependencies now include Affjax.
+* Added three new wav resources - hihat, kick and snare.
 
-## adkelley Changes 
+## adkelley changes 
 * Updated to work with `purs 0.11.x`
 * Updated tests to use `purescript-dom` and some components from `purescript-simple-dom`
 * Updated `testXX.html` files to run `testXX.js` implicitly after `window` object is loaded
