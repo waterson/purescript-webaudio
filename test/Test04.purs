@@ -3,7 +3,7 @@ module Test04 where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
-import Audio.WebAudio.AudioContext (connect, createBufferSource, decodeAudioDataAsync, destination, makeAudioContext)
+import Audio.WebAudio.AudioContext (connect, createBufferSource, currentTime, decodeAudioDataAsync, destination, makeAudioContext)
 import Audio.WebAudio.Types (AudioContext, AudioBuffer, WebAudio)
 import Control.Monad.Aff (Aff, Fiber, launchAff)
 import Control.Monad.Eff (Eff)
@@ -47,9 +47,6 @@ loadSoundBuffers ctx fileNames =
   sequential $ traverse (\name -> parallel (loadSoundBuffer ctx name)) fileNames
 
 -- | Play a sound at a sepcified elapsed time
--- | Note, in order to do timing accurately, we need to use as a base time the
--- | AudioContext time.  At the moment, this is not available to us
--- | (as, I think, are other properties of web-audio classes)
 playSoundAt  :: ∀ eff.
      AudioContext
   -> Maybe AudioBuffer
@@ -58,15 +55,17 @@ playSoundAt  :: ∀ eff.
       ( wau :: WebAudio
       | eff )
       Unit
-playSoundAt ctx mbuffer time =
+playSoundAt ctx mbuffer elapsedTime =
   case mbuffer of
     Just buffer ->
       do
+        startTime <- currentTime ctx
         src <- createBufferSource ctx
         dst <- destination ctx
         _ <- connect src dst
         _ <- setBuffer buffer src
-        startBufferSource time src
+        -- // We'll start playing the sound 100 milliseconds from "now"
+        startBufferSource (startTime + elapsedTime + 0.1) src
     _ ->
       pure unit
 
