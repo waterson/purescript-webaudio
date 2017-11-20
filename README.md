@@ -24,8 +24,9 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Added __decodeAudioDataAsync__ to AudioContext.  This runs in Aff not Eff but has the advantage that audio buffers can be returned directly.  This, of course, introduces a dependency on Aff 4.0.0 and requires users to lift the original Eff functions into Aff if they wish to use it.  I hope that this overhead should not be too restrictive given that a natural way to load sound resources is via Aff anyway.
 * Added Test04 to illustrate basic usage.  devDependencies now include Affjax.
 * Added three new wav resources - hihat, kick and snare.
+* Added TestProps to test some simple properties added to AudioBufferSourceNode
 
-## adkelley changes 
+## adkelley changes
 * Updated to work with `purs 0.11.x`
 * Updated tests to use `purescript-dom` and some components from `purescript-simple-dom`
 * Updated `testXX.html` files to run `testXX.js` implicitly after `window` object is loaded

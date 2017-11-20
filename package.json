@@ -8,7 +8,8 @@
              , "Test02": "pulp browserify -m Test02 --include test:src --optimise --to html/test02.js"
              , "Test03": "pulp browserify -m Test03 --include test:src --optimise --to html/test03.js"
              , "Test04": "pulp browserify -m Test04 --include test:src --optimise --to html/test04.js"
-             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03 && npm run Test04"
+             , "TestProps": "pulp browserify -m TestProps --include test:src --optimise --to html/testProps.js"
+             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03 && npm run Test04 && npm run TestProps"
            },
   "private": true,
   "author": {

@@ -33,6 +33,7 @@
     "purescript-partial": "^1.2.1",
     "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0",
-    "purescript-affjax": "^5.0.0"
+    "purescript-affjax": "^5.0.0",
+    "purescript-assert": "^3.0.0"
   }
 }

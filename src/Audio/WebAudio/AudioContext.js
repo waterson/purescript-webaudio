@@ -69,7 +69,7 @@ function _decodeAudioData (cx, audioData, onError, onSuccess) {
     },
     function (e) {
       // console.log('buffer decode failed ');
-      onError('decodeAudioData error', e);
+      onError(e.err);
    });
 };
 
