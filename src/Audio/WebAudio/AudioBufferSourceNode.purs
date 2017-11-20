@@ -1,5 +1,5 @@
 module Audio.WebAudio.AudioBufferSourceNode
-  ( setBuffer, startBufferSource
+  ( setBuffer, startBufferSource, stopBufferSource
   , loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd  ) where
 
 import Prelude
@@ -13,6 +13,11 @@ foreign import setBuffer
   -> (Eff (wau :: WebAudio | eff) Unit)
 
 foreign import startBufferSource
+  :: ∀ eff. Number
+  -> AudioBufferSourceNode
+  -> (Eff (wau :: WebAudio | eff) Unit)
+
+foreign import stopBufferSource
   :: ∀ eff. Number
   -> AudioBufferSourceNode
   -> (Eff (wau :: WebAudio | eff) Unit)
