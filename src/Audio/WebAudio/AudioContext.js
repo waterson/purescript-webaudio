@@ -31,6 +31,14 @@ exports.createMediaElementSource = function(ctx) {
   };
 };
 
+// for the moment we create without the optional parameters
+exports.createBiquadFilter = function(ctx) {
+  return function() {
+    return ctx.createBiquadFilter();
+  };
+};
+
+
 exports.currentTime = function(cx) {
   return function() {
     return cx.currentTime;

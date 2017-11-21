@@ -1,5 +1,5 @@
 module Audio.WebAudio.AudioContext
-  ( makeAudioContext, createOscillator, createGain
+  ( makeAudioContext, createOscillator, createGain, createBiquadFilter
   , createMediaElementSource, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
   , connect
@@ -7,7 +7,8 @@ module Audio.WebAudio.AudioContext
 
 import Prelude
 
-import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode, DestinationNode, GainNode, MediaElementAudioSourceNode, OscillatorNode, WebAudio)
+import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode,
+  BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode, OscillatorNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -30,6 +31,10 @@ foreign import createMediaElementSource
   :: ∀ elt eff. AudioContext
   -> elt -- |^ a DOM element from which to construct the source node
   -> (Eff (wau :: WebAudio | eff) MediaElementAudioSourceNode)
+
+foreign import createBiquadFilter
+  :: ∀ eff. AudioContext
+  -> (Eff (wau :: WebAudio | eff) BiquadFilterNode)
 
 destination :: ∀ eff. AudioContext
             -> (Eff (wau :: WebAudio | eff) DestinationNode)
