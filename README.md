@@ -26,6 +26,7 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Added three new wav resources to the html directory - hihat, kick and snare.
 * Added TestProps to test some simple properties added to AudioBufferSourceNode
 * Added BiquadFilterNode (together with some property testing)
+* Added detune property to Oscillator
 
 ## adkelley changes
 * Updated to work with `purs 0.11.x`
