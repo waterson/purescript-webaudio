@@ -2,7 +2,7 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain, createBiquadFilter
   , createMediaElementSource, createDelay, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
-  , connect
+  , connect, disconnect
   ) where
 
 import Prelude
