@@ -85,9 +85,15 @@ foreign import createBufferSource
   :: ∀ eff. AudioContext
   -> (Eff (wau :: WebAudio | eff) AudioBufferSourceNode)
 
--- this is really a method on an AudioNode.
+-- these are really methods on an AudioNode.
 
 -- foreign import connect
 foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
+  -> n
+  -> (Eff (wau :: WebAudio | eff) Unit)
+
+-- There are multiple disconnect options - this one seems the most useful
+-- foreign import disconnect
+foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
   -> (Eff (wau :: WebAudio | eff) Unit)
