@@ -1,5 +1,5 @@
 module Audio.WebAudio.Oscillator
-  ( OscillatorType(..), readOscillatorType, frequency
+  ( OscillatorType(..), readOscillatorType, frequency, detune
   , oscillatorType, setOscillatorType, startOscillator
   , stopOscillator) where
 
@@ -27,6 +27,9 @@ readOscillatorType _          = Sine
 
 frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
 frequency = unsafeGetProp "frequency"
+
+detune :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+detune = unsafeGetProp "detune"
 
 oscillatorType :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n
