@@ -5,9 +5,10 @@ module TestProps where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
-import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, makeAudioContext)
+import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, makeAudioContext)
 import Audio.WebAudio.Types (WebAudio, AudioContext)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
+import Audio.WebAudio.DelayNode (delayTime)
 import Audio.WebAudio.AudioParam (setValue, getValue)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
@@ -18,7 +19,8 @@ main :: ∀ eff.(Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | ef
 main = do
   ctx <- makeAudioContext
   _ <- sourceBufferTests ctx
-  biquadFilterTests ctx
+  _ <- biquadFilterTests ctx
+  delayNodeTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 sourceBufferTests ctx = do
@@ -58,3 +60,13 @@ biquadFilterTests ctx = do
   q' <- getValue qParam'
   _ <- assert' "incorrect set filter quality" (q' == 30.0)
   log "biquad filter tests passed"
+
+delayNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+delayNodeTests ctx = do
+  delayNode <- createDelay ctx
+  delayParam <- delayTime delayNode
+  -- by default we're restructed to values between 0 and 1 second
+  _ <- setValue 0.75 delayParam
+  delay <- getValue delayParam
+  _ <- assert' ("incorrect delay time: " <> (show delay)) (delay == 0.75)
+  log "delay node tests passed"
