@@ -2,13 +2,13 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain, createBiquadFilter
   , createMediaElementSource, createDelay, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
-  , connect, disconnect
+  , connect, disconnect, connectParam, disconnectParam
   ) where
 
 import Prelude
 
 import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode,
-  BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
+  AudioParam, BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
   DelayNode, OscillatorNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
@@ -85,7 +85,7 @@ foreign import createBufferSource
   :: ∀ eff. AudioContext
   -> (Eff (wau :: WebAudio | eff) AudioBufferSourceNode)
 
--- these are really methods on an AudioNode.
+-- these connect/disconnect methods are really methods on an AudioNode.
 
 -- foreign import connect
 foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
@@ -96,4 +96,14 @@ foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
 -- foreign import disconnect
 foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
+  -> (Eff (wau :: WebAudio | eff) Unit)
+
+-- foreign import connectParam
+foreign import connectParam  :: ∀ m eff. AudioNode m => m
+  -> AudioParam
+  -> (Eff (wau :: WebAudio | eff) Unit)
+
+-- foreign import disconnectParam
+foreign import disconnectParam  :: ∀ m eff. AudioNode m => m
+  -> AudioParam
   -> (Eff (wau :: WebAudio | eff) Unit)
