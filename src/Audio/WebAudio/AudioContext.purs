@@ -98,6 +98,8 @@ foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
   -> (Eff (wau :: WebAudio | eff) Unit)
 
+-- | connectParam and disconnectParam don't seem to work
+
 -- foreign import connectParam
 foreign import connectParam  :: ∀ m eff. AudioNode m => m
   -> AudioParam
