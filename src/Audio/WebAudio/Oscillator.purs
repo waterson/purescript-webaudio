@@ -1,6 +1,6 @@
 module Audio.WebAudio.Oscillator
-  ( OscillatorType(..), readOscillatorType, frequency, detune
-  , oscillatorType, setOscillatorType, startOscillator
+  ( OscillatorType(..), readOscillatorType, frequency, detune, setFrequency
+  , setDetune, oscillatorType, setOscillatorType, startOscillator
   , stopOscillator) where
 
 import Prelude
