@@ -2,13 +2,13 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain, createBiquadFilter
   , createMediaElementSource, createDelay, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
-  , connect, disconnect, connectParam, disconnectParam
+  , connect, disconnect
   ) where
 
 import Prelude
 
 import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode,
-  AudioParam, BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
+  BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
   DelayNode, OscillatorNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
@@ -96,16 +96,4 @@ foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
 -- foreign import disconnect
 foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
-
--- | connectParam and disconnectParam don't seem to work
-
--- foreign import connectParam
-foreign import connectParam  :: ∀ m eff. AudioNode m => m
-  -> AudioParam
-  -> (Eff (wau :: WebAudio | eff) Unit)
-
--- foreign import disconnectParam
-foreign import disconnectParam  :: ∀ m eff. AudioNode m => m
-  -> AudioParam
   -> (Eff (wau :: WebAudio | eff) Unit)

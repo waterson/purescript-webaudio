@@ -127,30 +127,3 @@ exports.disconnect = function(_) {
     };
   };
 };
-
-// I've chosen to replicate the javascript used for connecting to nodes here
-// when connecting to Audio parameters although the JavaScript is identical.
-// probably we can just reuse the same JavaScript for each
-exports.connectParam = function(_) {
-  return function(_) {
-    return function(source) {
-      return function(sink) {
-        return function() {
-          source.connect(sink);
-        };
-      };
-    };
-  };
-};
-
-exports.disconnectParam = function(_) {
-  return function(_) {
-    return function(source) {
-      return function(sink) {
-        return function() {
-          source.disconnect(sink);
-        };
-      };
-    };
-  };
-};
