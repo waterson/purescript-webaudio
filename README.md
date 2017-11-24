@@ -29,7 +29,8 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Added detune property to Oscillator
 * Added DelayNode
 * Added disconnect, connectParam and disconnectParam to AudioContext
- 
+* Experiment with shorthand setters for AudioParam properties on some nodes
+
 ### issues
 Samples exercising all these changes are to be found at [webaudio-examples](https://github.com/newlandsvalley/webaudio-examples).  The frequency modulation example (which uses connectParam) currently fails.
 

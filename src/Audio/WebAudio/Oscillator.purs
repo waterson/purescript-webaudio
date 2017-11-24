@@ -7,6 +7,7 @@ import Prelude
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Types (AudioParam, OscillatorNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
+import Audio.WebAudio.AudioParam (setValue)
 
 data OscillatorType = Sine | Square | Sawtooth | Triangle | Custom
 
@@ -28,8 +29,16 @@ readOscillatorType _          = Sine
 frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 
+setFrequency :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setFrequency num node =
+  setValue num =<< frequency node
+
 detune :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
 detune = unsafeGetProp "detune"
+
+setDetune :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setDetune num node =
+  setValue num =<< detune node
 
 oscillatorType :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n

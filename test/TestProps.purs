@@ -5,9 +5,10 @@ module TestProps where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
-import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, makeAudioContext)
+import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain, makeAudioContext)
 import Audio.WebAudio.Types (WebAudio, AudioContext)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
+import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
 import Audio.WebAudio.AudioParam (setValue, getValue)
 import Control.Monad.Eff (Eff)
@@ -20,7 +21,8 @@ main = do
   ctx <- makeAudioContext
   _ <- sourceBufferTests ctx
   _ <- biquadFilterTests ctx
-  delayNodeTests ctx
+  _ <- delayNodeTests ctx
+  gainNodeTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 sourceBufferTests ctx = do
@@ -70,3 +72,12 @@ delayNodeTests ctx = do
   delay <- getValue delayParam
   _ <- assert' ("incorrect delay time: " <> (show delay)) (delay == 0.75)
   log "delay node tests passed"
+
+gainNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+gainNodeTests ctx = do
+  gainNode <- createGain ctx
+  _ <- setGain 30.0 gainNode
+  gainParam <- gain gainNode
+  gain <- getValue gainParam
+  _ <- assert' ("shorthand set gain failure: ") (gain == 30.0)
+  log "gain node tests passed"
