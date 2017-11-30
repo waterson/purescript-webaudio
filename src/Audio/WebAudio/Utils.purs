@@ -1,8 +1,12 @@
 module Audio.WebAudio.Utils
-  ( unsafeGetProp, unsafeSetProp, unsafeConnectParam) where
+  ( createUint8Buffer, createFloat32Buffer, unsafeGetProp, unsafeSetProp, unsafeConnectParam) where
 
 import Prelude
 import Control.Monad.Eff (Eff)
+import Data.ArrayBuffer.Types (ByteLength, Uint8Array, Float32Array)
+import Data.ArrayBuffer.ArrayBuffer (ARRAY_BUFFER, create) as ArrayBuffer
+import Data.ArrayBuffer.DataView (whole)
+import Data.ArrayBuffer.Typed (asUint8Array, asFloat32Array)
 import Audio.WebAudio.Types (class AudioNode, WebAudio)
 
 foreign import unsafeSetProp :: forall obj val eff. String -> obj -> val -> (Eff eff Unit)
@@ -22,3 +26,13 @@ foreign import unsafeConnectParam  :: ∀ m n eff. AudioNode m => AudioNode n =>
   -> n
   -> String
   -> (Eff (wau :: WebAudio | eff) Unit)
+
+-- | create an unsigned 8-bit integer buffer for use with an analyser node
+createUint8Buffer :: ∀ e. ByteLength -> Eff (arrayBuffer :: ArrayBuffer.ARRAY_BUFFER | e) Uint8Array
+createUint8Buffer len =
+  map (whole >>> asUint8Array) $ ArrayBuffer.create len
+
+-- | create a Float 32 buffer for use with an analyser node
+createFloat32Buffer :: ∀ e. ByteLength -> Eff (arrayBuffer :: ArrayBuffer.ARRAY_BUFFER | e) Float32Array
+createFloat32Buffer len =
+  map (whole >>> asFloat32Array) $ ArrayBuffer.create len

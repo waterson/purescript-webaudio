@@ -1,6 +1,6 @@
 module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain, createBiquadFilter
-  , createMediaElementSource, createDelay, destination, currentTime
+  , createMediaElementSource, createDelay, createAnalyser, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
   , connect, disconnect
   ) where
@@ -9,7 +9,7 @@ import Prelude
 
 import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode,
   BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
-  DelayNode, OscillatorNode, WebAudio)
+  DelayNode, OscillatorNode, AnalyserNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -36,6 +36,10 @@ foreign import createMediaElementSource
 foreign import createBiquadFilter
   :: ∀ eff. AudioContext
   -> (Eff (wau :: WebAudio | eff) BiquadFilterNode)
+
+foreign import createAnalyser
+  :: ∀ eff. AudioContext
+  -> (Eff (wau :: WebAudio | eff) AnalyserNode)
 
 -- | createDelay also has an alternative constructor with a maximum delay
 -- | note, if you don't set a max, it defaults to 1.0 and any attempt to set a greater value gives

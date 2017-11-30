@@ -6,25 +6,27 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
-     createOscillator, makeAudioContext)
+     createOscillator, createAnalyser, makeAudioContext)
 import Audio.WebAudio.Types (WebAudio, AudioContext)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
+import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData)
 import Audio.WebAudio.AudioParam (setValue, getValue)
-import Audio.WebAudio.Utils (unsafeConnectParam)
+import Audio.WebAudio.Utils (unsafeConnectParam, createUint8Buffer)
 import Control.Monad.Eff (Eff)
+import Data.ArrayBuffer.ArrayBuffer (ARRAY_BUFFER)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Test.Assert (ASSERT, assert')
 
-
-main :: ∀ eff.(Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+main :: ∀ eff.(Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
 main = do
   ctx <- makeAudioContext
   _ <- sourceBufferTests ctx
   _ <- biquadFilterTests ctx
   _ <- delayNodeTests ctx
   _ <- gainNodeTests ctx
+  _ <- analyserNodeTests ctx
   connectionTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
@@ -84,6 +86,16 @@ gainNodeTests ctx = do
   gain <- getValue gainParam
   _ <- assert' ("shorthand set gain failure: ") (gain == 30.0)
   log "gain node tests passed"
+
+analyserNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
+analyserNodeTests ctx = do
+  analyser <- createAnalyser ctx
+  size <- fftSize analyser
+  _ <- assert' ("default fft buffer size failure: ") (size == 2048)
+  -- these next 2 lines just test that nothing crashes
+  buffer <- createUint8Buffer size
+  _ <- getByteTimeDomainData analyser buffer
+  log "analyser node tests passed"
 
 connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 connectionTests ctx = do

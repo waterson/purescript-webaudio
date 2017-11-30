@@ -2,7 +2,7 @@ module Audio.WebAudio.Types
   ( class AudioNode, AudioBuffer, AudioBufferSourceNode
   , AudioContext, AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
-  , DelayNode, OscillatorNode, WebAudio) where
+  , DelayNode, OscillatorNode, AnalyserNode, WebAudio) where
 
 import Control.Monad.Eff (kind Effect)
 
@@ -18,6 +18,7 @@ foreign import data MediaElementAudioSourceNode :: Type
 foreign import data OscillatorNode :: Type
 foreign import data BiquadFilterNode :: Type
 foreign import data DelayNode :: Type
+foreign import data AnalyserNode :: Type
 
 class AudioNode n
 
@@ -28,3 +29,4 @@ instance audioNodeDestinationNode :: AudioNode DestinationNode
 instance audioNodeOscillatorNode :: AudioNode OscillatorNode
 instance audioNodeBiquadFilterNode :: AudioNode BiquadFilterNode
 instance audioNodeDelayNode :: AudioNode DelayNode
+instance audioNodeAnalyserNode :: AudioNode AnalyserNode

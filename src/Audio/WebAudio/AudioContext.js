@@ -43,6 +43,12 @@ exports.createDelay = function(ctx) {
   };
 };
 
+exports.createAnalyser = function(ctx) {
+  return function() {
+    return ctx.createAnalyser();
+  };
+};
+
 exports.currentTime = function(cx) {
   return function() {
     return cx.currentTime;
