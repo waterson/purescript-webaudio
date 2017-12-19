@@ -11,7 +11,7 @@ import Audio.WebAudio.Types (WebAudio, AudioContext)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
-import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData)
+import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData, minDecibels, setMinDecibels)
 import Audio.WebAudio.AudioParam (setValue, getValue)
 import Audio.WebAudio.Utils (unsafeConnectParam, createUint8Buffer)
 import Control.Monad.Eff (Eff)
@@ -92,6 +92,9 @@ analyserNodeTests ctx = do
   analyser <- createAnalyser ctx
   size <- fftSize analyser
   _ <- assert' ("default fft buffer size failure: ") (size == 2048)
+  _ <- setMinDecibels (-140.0) analyser
+  minDB <- minDecibels analyser
+  _ <- assert' ("minDecibels failure: ") (minDB == (-140.0))
   -- these next 2 lines just test that nothing crashes
   buffer <- createUint8Buffer size
   _ <- getByteTimeDomainData analyser buffer
