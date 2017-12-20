@@ -1,6 +1,7 @@
 module Audio.WebAudio.AnalyserNode
   (fftSize, frequencyBinCount, setFftSize, setFrequencyBinCount,
-    minDecibels, setMinDecibels, maxDecibels, setMaxDecibels, 
+    minDecibels, setMinDecibels, maxDecibels, setMaxDecibels,
+    smoothingTimeConstant, setSmoothingTimeConstant,
     getFloatFrequencyData, getByteFrequencyData, getFloatTimeDomainData,
     getByteTimeDomainData ) where
 
@@ -38,6 +39,13 @@ maxDecibels n = unsafeGetProp "maxDecibels" n
 
 setMaxDecibels :: ∀ eff. Number -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
 setMaxDecibels db n = unsafeSetProp "maxDecibels" n db
+
+smoothingTimeConstant :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) Number)
+smoothingTimeConstant n = unsafeGetProp "smoothingTimeConstant" n
+
+setSmoothingTimeConstant :: ∀ eff. Number -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setSmoothingTimeConstant tc n = unsafeSetProp "smoothingTimeConstant" n tc
+
 
 
 foreign import getFloatFrequencyData :: ∀ eff. AnalyserNode -> Float32Array -> (Eff (wau :: WebAudio | eff) Unit)
