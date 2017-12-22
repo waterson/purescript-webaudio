@@ -3,7 +3,7 @@
 exports.getFloatFrequencyData = function(analyserNode) {
   return function(dataArray) {
     return function() {
-      return analyserNode.getFloatFrequencyata(dataArray);
+      return analyserNode.getFloatFrequencyData(dataArray);
     };
   };
 };
@@ -11,7 +11,7 @@ exports.getFloatFrequencyData = function(analyserNode) {
 exports.getByteFrequencyData = function(analyserNode) {
   return function(dataArray) {
     return function() {
-      return analyserNode.getByteFrequencyata(dataArray);
+      return analyserNode.getByteFrequencyData(dataArray);
     };
   };
 };
