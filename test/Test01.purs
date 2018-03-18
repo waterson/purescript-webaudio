@@ -3,11 +3,11 @@ module Test01 where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (connect, createGain, createOscillator, currentTime, destination, makeAudioContext)
+import Audio.WebAudio.AudioContext (createGain, createOscillator, currentTime, destination, makeAudioContext)
 import Audio.WebAudio.AudioParam (setValueAtTime, setValue, getValue)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Oscillator (OscillatorType(..), frequency, setOscillatorType, startOscillator)
-import Audio.WebAudio.Types (AudioContext, OscillatorNode, GainNode, WebAudio)
+import Audio.WebAudio.Types (AudioContext, OscillatorNode, GainNode, WebAudio, connect)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Timer (TIMER, setTimeout)
 import DOM (DOM)

@@ -3,8 +3,8 @@ module Test03 where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
-import Audio.WebAudio.AudioContext (connect, createBufferSource, decodeAudioData, destination, makeAudioContext)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio)
+import Audio.WebAudio.AudioContext (createBufferSource, decodeAudioData, destination, makeAudioContext)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio, connect)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (warn)
 import DOM (DOM)

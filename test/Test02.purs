@@ -2,10 +2,10 @@ module Test02 where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (connect, createGain, createMediaElementSource, currentTime, destination, makeAudioContext, sampleRate)
+import Audio.WebAudio.AudioContext (createGain, createMediaElementSource, currentTime, destination, makeAudioContext, sampleRate)
 import Audio.WebAudio.AudioParam (setValue)
 import Audio.WebAudio.GainNode (gain)
-import Audio.WebAudio.Types (WebAudio)
+import Audio.WebAudio.Types (WebAudio, connect)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER, setTimeout)

@@ -3,8 +3,8 @@ module Test04 where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
-import Audio.WebAudio.AudioContext (connect, createBufferSource, currentTime, decodeAudioDataAsync, destination, makeAudioContext)
-import Audio.WebAudio.Types (AudioContext, AudioBuffer, WebAudio)
+import Audio.WebAudio.AudioContext (createBufferSource, currentTime, decodeAudioDataAsync, destination, makeAudioContext)
+import Audio.WebAudio.Types (AudioContext, AudioBuffer, WebAudio, connect)
 import Control.Monad.Aff (Aff, Fiber, launchAff)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)

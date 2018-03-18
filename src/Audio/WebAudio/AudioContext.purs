@@ -2,12 +2,11 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain, createBiquadFilter
   , createMediaElementSource, createDelay, createAnalyser, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
-  , connect, disconnect
   ) where
 
 import Prelude
 
-import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode,
+import Audio.WebAudio.Types (AudioBuffer, AudioContext, AudioBufferSourceNode,
   BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
   DelayNode, OscillatorNode, AnalyserNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
@@ -88,16 +87,3 @@ decodeAudioDataAsync ctx =
 foreign import createBufferSource
   :: ∀ eff. AudioContext
   -> (Eff (wau :: WebAudio | eff) AudioBufferSourceNode)
-
--- these connect/disconnect methods are really methods on an AudioNode.
-
--- foreign import connect
-foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
-  -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
-
--- There are multiple disconnect options - this one seems the most useful
--- foreign import disconnect
-foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
-  -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
