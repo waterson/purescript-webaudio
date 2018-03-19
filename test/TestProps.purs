@@ -7,14 +7,14 @@ import Prelude
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
      createOscillator, createAnalyser, makeAudioContext)
-import Audio.WebAudio.Types (WebAudio, AudioContext)
+import Audio.WebAudio.Types (WebAudio, AudioContext, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
 import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData, minDecibels, setMinDecibels,
        smoothingTimeConstant, setSmoothingTimeConstant)
 import Audio.WebAudio.AudioParam (setValue, getValue)
-import Audio.WebAudio.Utils (unsafeConnectParam, createUint8Buffer)
+import Audio.WebAudio.Utils (createUint8Buffer)
 import Control.Monad.Eff (Eff)
 import Data.ArrayBuffer.ArrayBuffer (ARRAY_BUFFER)
 import Control.Monad.Eff.Console (CONSOLE, log)
@@ -108,5 +108,5 @@ connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CO
 connectionTests ctx = do
   modulator <- createOscillator ctx
   modGainNode <- createGain ctx
-  _ <- unsafeConnectParam modGainNode modulator "frequency"
+  _ <- connectParam modGainNode modulator "frequency"
   log "connection tests passed"
