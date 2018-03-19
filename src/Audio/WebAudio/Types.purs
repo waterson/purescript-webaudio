@@ -1,5 +1,5 @@
 module Audio.WebAudio.Types
-  ( class RawAudioNode, class Connecting, AudioNode(..)
+  ( class RawAudioNode, class Connectable, AudioNode(..)
   , AudioBuffer, AudioBufferSourceNode, AudioContext
   , AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
@@ -7,7 +7,7 @@ module Audio.WebAudio.Types
   , connect, disconnect, connectParam) where
 
 import Control.Monad.Eff (kind Effect, Eff)
-import Prelude (Unit)
+import Prelude (Unit, pure, unit)
 
 foreign import data WebAudio :: Effect
 
@@ -26,7 +26,7 @@ foreign import data AnalyserNode :: Type
 -- | a 'raw' web-audio node
 class RawAudioNode n
 
-instance audioNodeAudioBufferSourceNode :: RawAudioNode AudioBufferSourceNode
+instance audioNodeAudioBufferSourceNodeconnectParam :: RawAudioNode AudioBufferSourceNode
 instance audioNodeMediaElementAudioSourceNode :: RawAudioNode MediaElementAudioSourceNode
 instance audioNodeGainNode :: RawAudioNode GainNode
 instance audioNodeDestinationNode :: RawAudioNode DestinationNode
@@ -35,69 +35,68 @@ instance audioNodeBiquadFilterNode :: RawAudioNode BiquadFilterNode
 instance audioNodeDelayNode :: RawAudioNode DelayNode
 instance audioNodeAnalyserNode :: RawAudioNode AnalyserNode
 
--- | a web audio node that can connect to another node
-class Connecting s where
-  connect ::  ∀ eff target. RawAudioNode target => s -> target -> (Eff (wau :: WebAudio | eff) Unit)
-  disconnect ::  ∀ eff target. RawAudioNode target => s -> target -> (Eff (wau :: WebAudio | eff) Unit)
-  connectParam  :: ∀ eff target. RawAudioNode target => s -> target -> String -> (Eff (wau :: WebAudio | eff) Unit)
+-- | a web audio node that is connectable/disconnectable from another node
+-- | or whose parameter(s) may be connectable from another node
+class Connectable target where
+  connect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (wau :: WebAudio | eff) Unit)
+  disconnect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (wau :: WebAudio | eff) Unit)
+  connectParam  :: ∀ eff source. RawAudioNode source => source -> target -> String -> (Eff (wau :: WebAudio | eff) Unit)
 
-instance connectingAudioBufferSourceNode :: Connecting AudioBufferSourceNode where
+instance connectableGainNode :: Connectable GainNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingMediaElementAudioSourceNode :: Connecting MediaElementAudioSourceNode where
+instance connectableOscillatorNode :: Connectable OscillatorNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingGainNode :: Connecting GainNode where
+instance connectableBiquadFilterNode :: Connectable BiquadFilterNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingOscillatorNode :: Connecting OscillatorNode where
+instance connectableDelayNode  :: Connectable DelayNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingiquadFilterNode :: Connecting BiquadFilterNode where
+instance connectableAnalyserNode  :: Connectable AnalyserNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingDelayNode  :: Connecting DelayNode where
+instance connectableDestinationNode  :: Connectable DestinationNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
-instance connectingAnalyserNode  :: Connecting AnalyserNode where
-  connect = nodeConnect
-  disconnect = nodeDisconnect
-  connectParam = unsafeConnectParam
+instance connectableAudioNode :: Connectable AudioNode where
+  connect s (Gain n) = nodeConnect s n
+  connect s (Oscillator n) = nodeConnect s n
+  connect s (BiquadFilter n) = nodeConnect s n
+  connect s (Delay n) = nodeConnect s n
+  connect s (Analyser n) = nodeConnect s n
+  connect s (Destination n) = nodeConnect s n
+  connect s _ = pure unit  -- you can't connect to source nodes
 
-instance connectingAudioNode :: Connecting AudioNode where
-  connect (Gain n) = nodeConnect n
-  connect (AudioBufferSource n) = nodeConnect n
-  connect (Oscillator n) = nodeConnect n
-  connect (BiquadFilter n) = nodeConnect n
-  connect (Delay n) = nodeConnect n
-  connect (Analyser n) = nodeConnect n
+  disconnect s (Gain n) = nodeDisconnect s n
+  disconnect s (Oscillator n) = nodeConnect s n
+  disconnect s (BiquadFilter n) = nodeDisconnect s n
+  disconnect s (Delay n) = nodeDisconnect s n
+  disconnect s (Analyser n) = nodeDisconnect s n
+  disconnect s (Destination n) = nodeConnect s n
+  disconnect s _ = pure unit -- you can't disconnect from source nodes
 
-  disconnect (Gain n) = nodeDisconnect n
-  disconnect (AudioBufferSource n) = nodeDisconnect n
-  disconnect (Oscillator n) = nodeDisconnect n
-  disconnect (BiquadFilter n) = nodeDisconnect n
-  disconnect (Delay n) = nodeDisconnect n
-  disconnect (Analyser n) = nodeDisconnect n
-
-  connectParam (Gain n) t p = unsafeConnectParam n t p
-  connectParam (AudioBufferSource n) t p = unsafeConnectParam n t p
-  connectParam (Oscillator n) t p = unsafeConnectParam n t p
-  connectParam (BiquadFilter n) t p = unsafeConnectParam n t p
-  connectParam (Delay n) t p = unsafeConnectParam n t p
-  connectParam (Analyser n) t p = unsafeConnectParam n t p
-
+  connectParam s (Gain n) p = unsafeConnectParam s n p
+  -- not sure yet if you can connect to params on source nodes like the next two
+  connectParam s (AudioBufferSource n) p = unsafeConnectParam s n p
+  connectParam s (Oscillator n) p = unsafeConnectParam s n p
+  connectParam s (BiquadFilter n) p = unsafeConnectParam s n p
+  connectParam s (Delay n) p = unsafeConnectParam s n p
+  connectParam s (Analyser n) p = unsafeConnectParam s n p
+  connectParam s (Destination n) p = pure unit
 
 -- foreign import connect
 foreign import nodeConnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
@@ -132,3 +131,4 @@ data AudioNode =
   | BiquadFilter BiquadFilterNode
   | Delay DelayNode
   | Analyser AnalyserNode
+  | Destination DestinationNode
