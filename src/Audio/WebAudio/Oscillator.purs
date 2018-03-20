@@ -26,6 +26,10 @@ readOscillatorType "triangle" = Triangle
 readOscillatorType "custom"   = Custom
 readOscillatorType _          = Sine
 
+derive instance eqOscillatorType :: Eq OscillatorType
+derive instance ordOscillatorType :: Ord OscillatorType
+
+
 frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 
