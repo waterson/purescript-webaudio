@@ -3,7 +3,7 @@ module Audio.WebAudio.AudioParam
   , linearRampToValueAtTime, exponentialRampToValueAtTime, cancelScheduledValues
   ) where
 
-import Prelude
+import Prelude (Unit)
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Types (AudioParam, WebAudio)
 
