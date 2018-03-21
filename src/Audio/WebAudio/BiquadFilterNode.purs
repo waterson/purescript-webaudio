@@ -1,5 +1,5 @@
 module Audio.WebAudio.BiquadFilterNode
-  ( BiquadFilterType(..), filterType, setFilterType
+  ( BiquadFilterType(..), readBiquadFilterType, filterType, setFilterType
   , filterFrequency, quality, gain) where
 
 import Audio.WebAudio.Types
