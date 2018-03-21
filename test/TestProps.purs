@@ -6,8 +6,8 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
-     createOscillator, createAnalyser, makeAudioContext)
-import Audio.WebAudio.Types (WebAudio, AudioContext, connectParam)
+     createOscillator, createAnalyser, makeAudioContext, destination)
+import Audio.WebAudio.Types (WebAudio, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
@@ -109,4 +109,15 @@ connectionTests ctx = do
   modulator <- createOscillator ctx
   modGainNode <- createGain ctx
   _ <- connectParam modGainNode modulator "frequency"
+  -- simple connect
+  osc1 <- createOscillator ctx
+  gain1 <- createGain ctx
+  dest <- destination ctx
+  _ <- connect gain1 dest
+  _ <- connect osc1 gain1
+  -- audio node connect
+  osc2 <- createOscillator ctx
+  gain2 <- createGain ctx
+  _ <- connect gain2 (Destination dest)
+  _ <- connect osc2 (Gain gain2)
   log "connection tests passed"
