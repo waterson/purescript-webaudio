@@ -3,7 +3,7 @@ module Audio.WebAudio.Types
   , AudioBuffer, AudioBufferSourceNode, AudioContext
   , AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
-  , DelayNode, OscillatorNode, AnalyserNode, WebAudio
+  , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode, WebAudio
   , connect, disconnect, connectParam) where
 
 import Control.Monad.Eff (kind Effect, Eff)
@@ -22,6 +22,7 @@ foreign import data OscillatorNode :: Type
 foreign import data BiquadFilterNode :: Type
 foreign import data DelayNode :: Type
 foreign import data AnalyserNode :: Type
+foreign import data StereoPannerNode :: Type
 
 -- | a 'raw' web-audio node
 class RawAudioNode n
@@ -34,6 +35,7 @@ instance audioNodeOscillatorNode :: RawAudioNode OscillatorNode
 instance audioNodeBiquadFilterNode :: RawAudioNode BiquadFilterNode
 instance audioNodeDelayNode :: RawAudioNode DelayNode
 instance audioNodeAnalyserNode :: RawAudioNode AnalyserNode
+instance audioNodeStereoPannerNode :: RawAudioNode StereoPannerNode
 
 -- | a web audio node that is connectable/disconnectable from another node
 -- | or whose parameter(s) may be connectable from another node
@@ -67,6 +69,11 @@ instance connectableAnalyserNode  :: Connectable AnalyserNode where
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
+instance connectableStereoPannerNode  :: Connectable StereoPannerNode where
+  connect = nodeConnect
+  disconnect = nodeDisconnect
+  connectParam = unsafeConnectParam
+
 instance connectableDestinationNode  :: Connectable DestinationNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
@@ -78,6 +85,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   connect s (BiquadFilter n) = nodeConnect s n
   connect s (Delay n) = nodeConnect s n
   connect s (Analyser n) = nodeConnect s n
+  connect s (StereoPanner n) = nodeConnect s n
   connect s (Destination n) = nodeConnect s n
   connect s _ = pure unit  -- you can't connect to source nodes
 
@@ -86,6 +94,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   disconnect s (BiquadFilter n) = nodeDisconnect s n
   disconnect s (Delay n) = nodeDisconnect s n
   disconnect s (Analyser n) = nodeDisconnect s n
+  disconnect s (StereoPanner n) = nodeDisconnect s n
   disconnect s (Destination n) = nodeConnect s n
   disconnect s _ = pure unit -- you can't disconnect from source nodes
 
@@ -96,6 +105,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   connectParam s (BiquadFilter n) p = unsafeConnectParam s n p
   connectParam s (Delay n) p = unsafeConnectParam s n p
   connectParam s (Analyser n) p = unsafeConnectParam s n p
+  connectParam s (StereoPanner n) p = unsafeConnectParam s n p
   connectParam s (Destination n) p = pure unit
 
 -- foreign import connect
@@ -131,4 +141,5 @@ data AudioNode =
   | BiquadFilter BiquadFilterNode
   | Delay DelayNode
   | Analyser AnalyserNode
+  | StereoPanner StereoPannerNode
   | Destination DestinationNode

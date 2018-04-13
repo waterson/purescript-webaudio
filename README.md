@@ -31,12 +31,13 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Added disconnect to AudioContext.
 * Experiment with shorthand setters for AudioParam properties on some nodes.
 * Added AnalyserNode plus buffer creation functions in Utils.  This introduces a dependency on Data.ArrayBuffer.
+* Added StereoPannerNode
 
 ### breaking changes
 
 * Renamed class __AudioNode__ to __RawAudioNode__
-* Added class __Connecting__ to represent nodes that can connect to others.  Moved __connect__ and __disconnect__ from AudioContext to Types. 
-* __AudioNode__ now represents a sum type over all the raw audio nodes and is an instance of __Connecting__
+* Added class __Connectable__ to represent nodes that can be connect to from others.  Moved __connect__ and __disconnect__ from AudioContext to Types. 
+* __AudioNode__ now represents a sum type over all the raw audio nodes and is an instance of __Connectable__
 
 ### examples
 

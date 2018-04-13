@@ -46,6 +46,12 @@ exports.createAnalyser = function(ctx) {
   };
 };
 
+exports.createStereoPanner = function(ctx) {
+  return function() {
+    return ctx.createStereoPanner();
+  };
+};
+
 exports.currentTime = function(cx) {
   return function() {
     return cx.currentTime;

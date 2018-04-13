@@ -23,18 +23,3 @@ exports.unsafeGetProp = function(prop) {
     };
   };
 };
-
-exports.unsafeConnectParam = function(_) {
-  return function(_) {
-    return function(source) {
-      return function(target) {
-        return function(prop) {
-          return function() {
-            var value = target[prop];
-            source.connect(value);
-          };
-        };
-      };
-    };
-  };
-};

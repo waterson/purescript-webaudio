@@ -6,11 +6,12 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
-     createOscillator, createAnalyser, makeAudioContext, destination)
+     createOscillator, createAnalyser, createStereoPanner, makeAudioContext, destination)
 import Audio.WebAudio.Types (WebAudio, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
+import Audio.WebAudio.StereoPannerNode (pan)
 import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData, minDecibels, setMinDecibels,
        smoothingTimeConstant, setSmoothingTimeConstant)
 import Audio.WebAudio.AudioParam (setValue, getValue)
@@ -28,6 +29,7 @@ main = do
   _ <- delayNodeTests ctx
   _ <- gainNodeTests ctx
   _ <- analyserNodeTests ctx
+  _ <- stereoPannerNodeTests ctx
   connectionTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
@@ -103,6 +105,16 @@ analyserNodeTests ctx = do
   buffer <- createUint8Buffer size
   _ <- getByteTimeDomainData analyser buffer
   log "analyser node tests passed"
+
+stereoPannerNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+stereoPannerNodeTests ctx = do
+  stereoPannerNode <- createStereoPanner ctx
+  panParam <- pan stereoPannerNode
+  -- by default we're restructed to values between -1 and +1
+  _ <- setValue (-0.75) panParam
+  panVal <- getValue panParam
+  _ <- assert' ("incorrect pan value: " <> (show panVal)) (panVal == -0.75)
+  log "stereo panner node tests passed"
 
 connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 connectionTests ctx = do
