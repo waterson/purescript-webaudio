@@ -6,12 +6,14 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
-     createOscillator, createAnalyser, createStereoPanner, makeAudioContext, destination)
+     createOscillator, createAnalyser, createStereoPanner, createDynamicsCompressor,
+     makeAudioContext, destination)
 import Audio.WebAudio.Types (WebAudio, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
 import Audio.WebAudio.StereoPannerNode (pan)
+import Audio.WebAudio.DynamicsCompressorNode (threshold, knee, ratio, attack, release, reduction)
 import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData, minDecibels, setMinDecibels,
        smoothingTimeConstant, setSmoothingTimeConstant)
 import Audio.WebAudio.AudioParam (setValue, getValue)
@@ -30,6 +32,7 @@ main = do
   _ <- gainNodeTests ctx
   _ <- analyserNodeTests ctx
   _ <- stereoPannerNodeTests ctx
+  _ <- dynamicsCompressorNodeTests ctx
   connectionTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
@@ -75,7 +78,7 @@ delayNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CON
 delayNodeTests ctx = do
   delayNode <- createDelay ctx
   delayParam <- delayTime delayNode
-  -- by default we're restructed to values between 0 and 1 second
+  -- by default we're restricted to values between 0 and 1 second
   _ <- setValue 0.75 delayParam
   delay <- getValue delayParam
   _ <- assert' ("incorrect delay time: " <> (show delay)) (delay == 0.75)
@@ -110,11 +113,43 @@ stereoPannerNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console
 stereoPannerNodeTests ctx = do
   stereoPannerNode <- createStereoPanner ctx
   panParam <- pan stereoPannerNode
-  -- by default we're restructed to values between -1 and +1
+  -- by default we're restricted to values between -1 and +1
   _ <- setValue (-0.75) panParam
   panVal <- getValue panParam
   _ <- assert' ("incorrect pan value: " <> (show panVal)) (panVal == -0.75)
   log "stereo panner node tests passed"
+
+dynamicsCompressorNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+dynamicsCompressorNodeTests ctx = do
+  compressorNode <- createDynamicsCompressor ctx
+  thresholdParam <- threshold compressorNode
+  -- by default we're restricted to values between -100 and 0
+  _ <- setValue (-50.0) thresholdParam
+  thresholdVal <- getValue thresholdParam
+  _ <- assert' ("incorrect threshold value: " <> (show thresholdVal)) (thresholdVal == -50.0)
+  kneeParam <- knee compressorNode
+  _ <- setValue (30.0) kneeParam
+  kneeVal <- getValue kneeParam
+  _ <- assert' ("incorrect knee value: " <> (show kneeVal)) (kneeVal == 30.0)
+  ratioParam <- ratio compressorNode
+  -- by default we're restricted to values between 1 and 20
+  _ <- setValue (20.0) ratioParam
+  ratioVal <- getValue ratioParam
+  _ <- assert' ("incorrect ratio value: " <> (show ratioVal)) (ratioVal == 20.0)
+  attackParam <- attack compressorNode
+  -- by default we're restricted to values between 0 and 1
+  _ <- setValue (0.5) attackParam
+  attackVal <- getValue attackParam
+  _ <- assert' ("incorrect attack value: " <> (show attackVal)) (attackVal == 0.5)
+  releaseParam <- release compressorNode
+  -- by default we're restricted to values between 0 and 1
+  _ <- setValue (0.5) releaseParam
+  releaseVal <- getValue releaseParam
+  _ <- assert' ("incorrect release value: " <> (show releaseVal)) (releaseVal == 0.5)
+  -- 0.0 is the default
+  reduction' <- reduction compressorNode
+  _ <- assert' ("get reduction failure" <> (show reduction')) (reduction' == 0.0)
+  log "dynamics compressor node tests passed"
 
 connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 connectionTests ctx = do

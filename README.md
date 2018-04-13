@@ -32,6 +32,7 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Experiment with shorthand setters for AudioParam properties on some nodes.
 * Added AnalyserNode plus buffer creation functions in Utils.  This introduces a dependency on Data.ArrayBuffer.
 * Added StereoPannerNode
+* Added DynamicsCompressorNode
 
 ### breaking changes
 

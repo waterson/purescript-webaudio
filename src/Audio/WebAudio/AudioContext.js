@@ -52,6 +52,12 @@ exports.createStereoPanner = function(ctx) {
   };
 };
 
+exports.createDynamicsCompressor = function(ctx) {
+  return function() {
+    return ctx.createDynamicsCompressor();
+  };
+};
+
 exports.currentTime = function(cx) {
   return function() {
     return cx.currentTime;
