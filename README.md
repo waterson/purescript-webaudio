@@ -41,7 +41,7 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 
 ### examples
 
-Samples exercising most of these changes are to be found at [webaudio-examples](https://github.com/newlandsvalley/webaudio-examples).  
+Samples exercising most of these changes are to be found at [webaudio-examples](https://github.com/newlandsvalley/webaudio-examples) and at [purescript-audiograph](https://github.com/newlandsvalley/purescript-audiograph) (which is an attempt to provide a declarative interface to web-audio).  
 
 
 ## adkelley changes
