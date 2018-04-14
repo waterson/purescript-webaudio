@@ -3,6 +3,7 @@ module Audio.WebAudio.AudioContext
   , createMediaElementSource, createDelay, createAnalyser, createStereoPanner
   , createDynamicsCompressor, destination, currentTime
   , sampleRate, decodeAudioData, decodeAudioDataAsync, createBufferSource
+  , createConvolver
   ) where
 
 import Prelude
@@ -10,7 +11,7 @@ import Prelude
 import Audio.WebAudio.Types (AudioBuffer, AudioContext, AudioBufferSourceNode,
   BiquadFilterNode, DestinationNode, GainNode, MediaElementAudioSourceNode,
   DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode,
-  DynamicsCompressorNode, WebAudio)
+  DynamicsCompressorNode, ConvolverNode, WebAudio)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -49,6 +50,10 @@ foreign import createStereoPanner
 foreign import createDynamicsCompressor
     :: ∀ eff. AudioContext
     -> (Eff (wau :: WebAudio | eff) DynamicsCompressorNode)
+
+foreign import createConvolver
+  :: ∀ eff. AudioContext
+  -> (Eff (wau :: WebAudio | eff) ConvolverNode)
 
 -- | createDelay also has an alternative constructor with a maximum delay
 -- | note, if you don't set a max, it defaults to 1.0 and any attempt to set a greater value gives

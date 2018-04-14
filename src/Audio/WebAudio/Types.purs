@@ -4,7 +4,7 @@ module Audio.WebAudio.Types
   , AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
   , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode
-  , DynamicsCompressorNode, WebAudio
+  , DynamicsCompressorNode, ConvolverNode, WebAudio
   , connect, disconnect, connectParam) where
 
 import Control.Monad.Eff (kind Effect, Eff)
@@ -25,6 +25,7 @@ foreign import data DelayNode :: Type
 foreign import data AnalyserNode :: Type
 foreign import data StereoPannerNode :: Type
 foreign import data DynamicsCompressorNode :: Type
+foreign import data ConvolverNode :: Type
 
 -- | a 'raw' web-audio node
 class RawAudioNode n
@@ -39,6 +40,7 @@ instance audioNodeDelayNode :: RawAudioNode DelayNode
 instance audioNodeAnalyserNode :: RawAudioNode AnalyserNode
 instance audioNodeStereoPannerNode :: RawAudioNode StereoPannerNode
 instance audioNodeDynamicsCompressorNode :: RawAudioNode DynamicsCompressorNode
+instance audioNodeDynamicsCConvolverNode :: RawAudioNode ConvolverNode
 
 -- | a web audio node that is connectable/disconnectable from another node
 -- | or whose parameter(s) may be connectable from another node
@@ -82,6 +84,11 @@ instance connectableDynamicsCompressorNode  :: Connectable DynamicsCompressorNod
   disconnect = nodeDisconnect
   connectParam = unsafeConnectParam
 
+instance connectableConvolverNode  :: Connectable ConvolverNode where
+  connect = nodeConnect
+  disconnect = nodeDisconnect
+  connectParam = unsafeConnectParam
+
 instance connectableDestinationNode  :: Connectable DestinationNode where
   connect = nodeConnect
   disconnect = nodeDisconnect
@@ -95,6 +102,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   connect s (Analyser n) = nodeConnect s n
   connect s (StereoPanner n) = nodeConnect s n
   connect s (DynamicsCompressor n) = nodeConnect s n
+  connect s (Convolver n) = nodeConnect s n
   connect s (Destination n) = nodeConnect s n
   connect s _ = pure unit  -- you can't connect to source nodes
 
@@ -105,6 +113,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   disconnect s (Analyser n) = nodeDisconnect s n
   disconnect s (StereoPanner n) = nodeDisconnect s n
   disconnect s (DynamicsCompressor n) = nodeDisconnect s n
+  disconnect s (Convolver n) = nodeDisconnect s n
   disconnect s (Destination n) = nodeConnect s n
   disconnect s _ = pure unit -- you can't disconnect from source nodes
 
@@ -117,6 +126,7 @@ instance connectableAudioNode :: Connectable AudioNode where
   connectParam s (Analyser n) p = unsafeConnectParam s n p
   connectParam s (StereoPanner n) p = unsafeConnectParam s n p
   connectParam s (DynamicsCompressor n) p = unsafeConnectParam s n p
+  connectParam s (Convolver n) p = unsafeConnectParam s n p
   connectParam s (Destination n) p = pure unit
 
 -- foreign import connect
@@ -154,4 +164,5 @@ data AudioNode =
   | Analyser AnalyserNode
   | StereoPanner StereoPannerNode
   | DynamicsCompressor DynamicsCompressorNode
+  | Convolver ConvolverNode
   | Destination DestinationNode

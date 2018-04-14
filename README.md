@@ -33,6 +33,7 @@ Note: To run `Test03`, I ported some components from [purescript-simple-dom](htt
 * Added AnalyserNode plus buffer creation functions in Utils.  This introduces a dependency on Data.ArrayBuffer.
 * Added StereoPannerNode
 * Added DynamicsCompressorNode
+* Added ConvolverNode
 
 ### breaking changes
 

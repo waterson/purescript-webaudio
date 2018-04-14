@@ -58,6 +58,12 @@ exports.createDynamicsCompressor = function(ctx) {
   };
 };
 
+exports.createConvolver = function(ctx) {
+  return function() {
+    return ctx.createConvolver();
+  };
+};
+
 exports.currentTime = function(cx) {
   return function() {
     return cx.currentTime;

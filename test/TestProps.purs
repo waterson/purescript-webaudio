@@ -7,13 +7,14 @@ import Prelude
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
      createOscillator, createAnalyser, createStereoPanner, createDynamicsCompressor,
-     makeAudioContext, destination)
+     createConvolver, makeAudioContext, destination)
 import Audio.WebAudio.Types (WebAudio, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
 import Audio.WebAudio.StereoPannerNode (pan)
 import Audio.WebAudio.DynamicsCompressorNode (threshold, knee, ratio, attack, release, reduction)
+import Audio.WebAudio.ConvolverNode (normalize, isNormalized)
 import Audio.WebAudio.AnalyserNode (fftSize, getByteTimeDomainData, minDecibels, setMinDecibels,
        smoothingTimeConstant, setSmoothingTimeConstant)
 import Audio.WebAudio.AudioParam (setValue, getValue)
@@ -33,6 +34,7 @@ main = do
   _ <- analyserNodeTests ctx
   _ <- stereoPannerNodeTests ctx
   _ <- dynamicsCompressorNodeTests ctx
+  _ <- convolverNodeTests ctx
   connectionTests ctx
 
 sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
@@ -150,6 +152,14 @@ dynamicsCompressorNodeTests ctx = do
   reduction' <- reduction compressorNode
   _ <- assert' ("get reduction failure" <> (show reduction')) (reduction' == 0.0)
   log "dynamics compressor node tests passed"
+
+convolverNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+convolverNodeTests ctx = do
+  convolverNode <- createConvolver ctx
+  _ <- normalize true convolverNode
+  normalized <- isNormalized convolverNode
+  _ <- assert' "normalize failed" (normalized == true)
+  log "convolver node tests passed"
 
 connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 connectionTests ctx = do
