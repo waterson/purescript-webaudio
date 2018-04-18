@@ -1,4 +1,4 @@
-module Test03 where
+module DecodeAudio where
 
 import Prelude
 
@@ -21,7 +21,7 @@ toArrayBuffer hd =
 main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
-  open GET "siren.wav" req
+  open GET "decode-audio.wav" req
   setResponseType "arraybuffer" req
   addProgressEventListener ProgressLoadEvent (play req) req
   send NoData req

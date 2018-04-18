@@ -1,9 +1,9 @@
 module Audio.WebAudio.AudioParam
-  (setValue, getValue, setValueAtTime
+  (setTargetAtTime, setValueAtTime, getValue, setValue
   , linearRampToValueAtTime, exponentialRampToValueAtTime, cancelScheduledValues
   ) where
 
-import Prelude
+import Prelude (Unit)
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Types (AudioParam, WebAudio)
 
@@ -13,11 +13,15 @@ foreign import setValue
 -- foreign import setValue
 --   :: ∀ eff. AudioParam -> Number -> (Eff (wau :: WebAudio | eff) Unit)
 
+foreign import setValueAtTime
+  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+
+foreign import setTargetAtTime
+  :: ∀ eff. Number -> Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+
 foreign import getValue
   :: ∀ eff. AudioParam -> (Eff (wau :: WebAudio | eff) Number)
 
-foreign import setValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
 
 foreign import linearRampToValueAtTime
   :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)

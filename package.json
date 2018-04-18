@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "description": "A PureScript wrapper for the HTML5 Web Audio API",
   "main": "",
-  "scripts": { "server": "cd html/ && python -m SimpleHTTPServer 8000"
-             , "Test01": "pulp browserify -m Test01 --include test:src --optimise --to html/test01.js"
-             , "Test02": "pulp browserify -m Test02 --include test:src --optimise --to html/test02.js"
-             , "Test03": "pulp browserify -m Test03 --include test:src --optimise --to html/test03.js"
-             , "Tests": "npm run Test01 && npm run Test02 && npm run Test03"
-           },
+  "scripts": {
+    "postinstall": "bower install",
+    "build:clean": "rm -rf dist output examples/*/output",
+    "build": "pulp build",
+    "build:example:square-wave": "pulp build --main SquareWave --to output/bundle.js -I examples/square-wave",
+    "build:example:gain": "pulp build --main Gain --to examples/gain/output/bundle.js -I examples/gain",
+    "exec:example:gain": "cd examples/gain/ && python -m SimpleHTTPServer 8000",
+    "build:example:decode": "pulp build --main DecodeAudio --to examples/decode/output/bundle.js -I examples/decode",
+    "exec:example:decode": "cd examples/decode/ && python -m SimpleHTTPServer 8000"
+  },
   "private": true,
   "author": {
     "name": "Chris Waterson",
