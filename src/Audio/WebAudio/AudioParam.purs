@@ -5,29 +5,26 @@ module Audio.WebAudio.AudioParam
 
 import Prelude (Unit)
 import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioParam, WebAudio)
+import Audio.WebAudio.Types (AudioParam, AUDIO)
 
 foreign import setValue
-  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Unit)
-
--- foreign import setValue
---   :: ∀ eff. AudioParam -> Number -> (Eff (wau :: WebAudio | eff) Unit)
+  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Unit)
 
 foreign import setValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
 
 foreign import setTargetAtTime
-  :: ∀ eff. Number -> Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. Number -> Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
 
 foreign import getValue
-  :: ∀ eff. AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. AudioParam -> (Eff (wau :: AUDIO | eff) Number)
 
 
 foreign import linearRampToValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
 
 foreign import exponentialRampToValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
 
 foreign import cancelScheduledValues
-  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: WebAudio | eff) Number)
+  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)

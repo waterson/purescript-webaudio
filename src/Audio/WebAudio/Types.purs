@@ -1,11 +1,11 @@
 module Audio.WebAudio.Types
   ( class AudioNode, AudioBuffer, AudioBufferSourceNode
   , AudioContext, AudioParam, DestinationNode
-  , GainNode, MediaElementAudioSourceNode, OscillatorNode, WebAudio) where
+  , GainNode, MediaElementAudioSourceNode, OscillatorNode, AUDIO) where
 
 import Control.Monad.Eff (kind Effect)
 
-foreign import data WebAudio :: Effect
+foreign import data AUDIO :: Effect
 
 foreign import data AudioBuffer :: Type
 foreign import data AudioBufferSourceNode :: Type

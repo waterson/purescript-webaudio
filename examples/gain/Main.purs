@@ -5,7 +5,7 @@ import Prelude
 import Audio.WebAudio.AudioContext (connect, createGain, createMediaElementSource, currentTime, destination, makeAudioContext, sampleRate)
 import Audio.WebAudio.AudioParam (setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
-import Audio.WebAudio.Types (WebAudio)
+import Audio.WebAudio.Types (AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Exception (EXCEPTION, throw)
@@ -17,9 +17,11 @@ import DOM.Node.NonElementParentNode (getElementById)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (wrap)
 
--- | 2 secs after the audio begins playing, set the value of the gain node to 0.5
+-- | 3 secs after the audio begins playing, set the value (i.e., volume)
+-- | of the gain node to 0.1
+
 main :: Eff ( dom :: DOM
-            , wau :: WebAudio
+            , wau :: AUDIO
             , console :: CONSOLE
             , exception :: EXCEPTION
             ) Unit

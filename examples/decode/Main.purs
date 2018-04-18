@@ -4,7 +4,7 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
 import Audio.WebAudio.AudioContext (connect, createBufferSource, decodeAudioData, destination, makeAudioContext)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (warn)
 import DOM (DOM)
@@ -18,7 +18,7 @@ toArrayBuffer hd =
     case hd of
       (ArrayBufferData a) -> a
 
-main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+main :: forall eff. (Eff (wau :: AUDIO, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
   open GET "decode-audio.wav" req

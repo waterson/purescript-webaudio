@@ -4,10 +4,10 @@ module SquareWave where
 import Prelude
 
 import Audio.WebAudio.AudioContext (connect, createGain, createOscillator, currentTime, destination, makeAudioContext)
-import Audio.WebAudio.AudioParam (setValueAtTime, setValue, getValue)
+import Audio.WebAudio.AudioParam (getValue, setTargetAtTime, setValue, setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Oscillator (OscillatorType(..), frequency, setOscillatorType, startOscillator)
-import Audio.WebAudio.Types (AudioContext, OscillatorNode, GainNode, WebAudio)
+import Audio.WebAudio.Types (AudioContext, OscillatorNode, GainNode, AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Timer (TIMER, setTimeout)
 import DOM (DOM)
@@ -15,7 +15,7 @@ import DOM (DOM)
 beep :: ∀ eff. AudioContext
      -> OscillatorNode
      -> GainNode
-     -> (Eff (wau :: WebAudio, dom :: DOM, timer :: TIMER | eff) Unit)
+     -> (Eff (wau :: AUDIO, dom :: DOM, timer :: TIMER | eff) Unit)
 beep ctx osc g = do
   freqParam <- frequency osc
   f <- getValue freqParam
@@ -23,13 +23,13 @@ beep ctx osc g = do
 
   t <- currentTime ctx
   gainParam <- gain g
-  _ <- setValueAtTime 1.000 t gainParam
+  _ <- setValueAtTime 0.5 t gainParam
   _ <- setValueAtTime 0.001 (t + 0.2) gainParam
 
   _ <- setTimeout 1000 $ beep ctx osc g
   pure unit
 
-main :: ∀ eff. Eff (wau :: WebAudio, dom :: DOM, timer :: TIMER | eff) Unit
+main :: ∀ eff. Eff (wau :: AUDIO, dom :: DOM, timer :: TIMER | eff) Unit
 main = do
   ctx <- makeAudioContext
 
