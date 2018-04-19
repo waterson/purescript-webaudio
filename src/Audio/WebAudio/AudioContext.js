@@ -80,3 +80,16 @@ exports.connect = function(_) {
     };
   };
 };
+
+
+exports.disconnect = function(_) {
+  return function(_) {
+    return function(source) {
+      return function(sink) {
+        return function() {
+          source.disconnect(sink);
+        };
+      };
+    };
+  };
+};

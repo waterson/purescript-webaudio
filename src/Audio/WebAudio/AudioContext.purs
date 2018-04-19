@@ -2,7 +2,7 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain
   , createMediaElementSource, destination, currentTime
   , sampleRate, decodeAudioData, createBufferSource
-  , connect
+  , connect, disconnect
   ) where
 
 import Prelude
@@ -60,5 +60,9 @@ foreign import createBufferSource
 
 -- foreign import connect
 foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
+  -> n
+  -> (Eff (wau :: AUDIO | eff) Unit)
+
+foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
   -> (Eff (wau :: AUDIO | eff) Unit)

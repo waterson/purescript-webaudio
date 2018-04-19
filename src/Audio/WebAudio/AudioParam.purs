@@ -1,30 +1,36 @@
 module Audio.WebAudio.AudioParam
   (setTargetAtTime, setValueAtTime, getValue, setValue
   , linearRampToValueAtTime, exponentialRampToValueAtTime, cancelScheduledValues
+  , Value, Seconds
   ) where
 
 import Prelude (Unit)
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Types (AudioParam, AUDIO)
 
+-- | Type synonymn for the value (e.g., Volume) of an AudioParam
+type Value = Number
+
+-- | Type synomymn for time (in seconds)
+type Seconds = Number
+
 foreign import setValue
-  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Unit)
+  :: ∀ eff. Value -> AudioParam -> (Eff (wau :: AUDIO | eff) Unit)
 
 foreign import setValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
+  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (wau :: AUDIO | eff) Value)
 
 foreign import setTargetAtTime
-  :: ∀ eff. Number -> Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
+  :: ∀ eff. Value -> Seconds -> Seconds -> AudioParam -> (Eff (wau :: AUDIO | eff) Value)
 
 foreign import getValue
-  :: ∀ eff. AudioParam -> (Eff (wau :: AUDIO | eff) Number)
-
+  :: ∀ eff. AudioParam -> (Eff (wau :: AUDIO | eff) Value)
 
 foreign import linearRampToValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
+  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (wau :: AUDIO | eff) Value)
 
 foreign import exponentialRampToValueAtTime
-  :: ∀ eff. Number -> Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
+  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (wau :: AUDIO | eff) Value)
 
 foreign import cancelScheduledValues
-  :: ∀ eff. Number -> AudioParam -> (Eff (wau :: AUDIO | eff) Number)
+  :: ∀ eff. Value -> AudioParam -> (Eff (wau :: AUDIO | eff) Value)

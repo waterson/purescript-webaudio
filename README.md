@@ -8,15 +8,20 @@ API](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html).
 Module documentation is available [here](API.md).
 
 To build the examples to run in your browser, perform the following scripts in order:
-1. `npm run build:example:xx` where xx is the example (siren, gain, decode)
+1. `npm run build:example:xx` where xx is the example (square-wave, gain, decode)
 
 To run the examples in your browser, perform the following scripts in order:
-1. `npm run exec:example:xx` where xx is the example (siren, gain, decode)
+1. `npm run exec:example:xx` where xx is the example (square-wave, gain, decode)
 
 
 ## Breaking Changes
 * Updated to work with `purs 0.11.x`
+* Renamed the `WebAudio` effect to `AUDIO` to conform with best practices
+* New type synomymns `Value` and `Seconds` for `AudioParam` methods
+
+## Improvements
 * Moved test/Test0X to `examples/` and renamed appropriately
+* Added `AudioParam.setTargetAtTime` 
 * Updated `API.md` to reflect `decodeAudioData` error handling change
 * Eliminated `gulp`, putting new build test scripts in `package.json`
 

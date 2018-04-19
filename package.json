@@ -7,7 +7,7 @@
     "postinstall": "bower install",
     "build:clean": "rm -rf dist output examples/*/output",
     "build": "pulp build",
-    "build:example:square-wave": "pulp build --main SquareWave --to examples/square-wave/output/bundle.js -I examples/square-wave",
+    "build:example:square-wave": "pulp browserify --main SquareWave --to examples/square-wave/output/bundle.js -I examples/square-wave",
     "exec:example:square-wave": "cd examples/square-wave/ && python -m SimpleHTTPServer 8000",
     "build:example:gain": "pulp build --main Gain --to examples/gain/output/bundle.js -I examples/gain",
     "exec:example:gain": "cd examples/gain/ && python -m SimpleHTTPServer 8000",
