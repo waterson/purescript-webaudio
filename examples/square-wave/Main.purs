@@ -63,12 +63,12 @@ handler e =
 main = do
   ctx <- makeAudioContext
 
-  osc <- createOscillator ctx
-  setOscillatorType Square osc
-  startOscillator 0.0 osc
+  -- osc <- createOscillator ctx
+  -- setOscillatorType Square osc
+  -- startOscillator 0.0 osc
 
-  g <- createGain ctx
-  setValue 0.0 =<< gain g
+  -- g <- createGain ctx
+  -- setValue 0.0 =<< gain g
 
   doc <- map htmlDocumentToParentNode (window >>= document)
   play <- querySelector (wrap "#play") doc
