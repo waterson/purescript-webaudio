@@ -15,54 +15,54 @@ import Data.ArrayBuffer.Types (ArrayBuffer)
 
 
 foreign import makeAudioContext
-  :: ∀ eff. (Eff (wau :: AUDIO | eff) AudioContext)
+  :: ∀ eff. (Eff (audio :: AUDIO | eff) AudioContext)
 
 foreign import createOscillator
   :: ∀ eff. AudioContext
-  -> (Eff (wau :: AUDIO | eff) OscillatorNode)
+  -> (Eff (audio :: AUDIO | eff) OscillatorNode)
 
 foreign import createGain
   :: ∀ eff. AudioContext
-  -> (Eff (wau :: AUDIO | eff) GainNode)
+  -> (Eff (audio :: AUDIO | eff) GainNode)
 
 foreign import createMediaElementSource
   :: ∀ elt eff. AudioContext
   -> elt -- |^ a DOM element from which to construct the source node
-  -> (Eff (wau :: AUDIO | eff) MediaElementAudioSourceNode)
+  -> (Eff (audio :: AUDIO | eff) MediaElementAudioSourceNode)
 
 destination :: ∀ eff. AudioContext
-            -> (Eff (wau :: AUDIO | eff) DestinationNode)
+            -> (Eff (audio :: AUDIO | eff) DestinationNode)
 
 destination = unsafeGetProp "destination"
 
 foreign import currentTime
   :: ∀ eff. AudioContext
-  -> (Eff (wau :: AUDIO | eff) Number)
+  -> (Eff (audio :: AUDIO | eff) Number)
 
 foreign import sampleRate
   :: ∀ eff. AudioContext
-  -> (Eff (wau :: AUDIO | eff) Number)
+  -> (Eff (audio :: AUDIO | eff) Number)
 
 
 foreign import decodeAudioData
   :: ∀ eff f.
      AudioContext
   -> ArrayBuffer
-  -> (AudioBuffer -> Eff (wau :: AUDIO | eff) Unit) -- sucesss
+  -> (AudioBuffer -> Eff (audio :: AUDIO | eff) Unit) -- sucesss
   -> (String -> Eff (console :: CONSOLE | eff) Unit) -- failure
-  -> (Eff (wau :: AUDIO | f) Unit)
+  -> (Eff (audio :: AUDIO | f) Unit)
 
 foreign import createBufferSource
   :: ∀ eff. AudioContext
-  -> (Eff (wau :: AUDIO | eff) AudioBufferSourceNode)
+  -> (Eff (audio :: AUDIO | eff) AudioBufferSourceNode)
 
 -- this is really a method on an AudioNode.
 
 -- foreign import connect
 foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
-  -> (Eff (wau :: AUDIO | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 foreign import disconnect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
-  -> (Eff (wau :: AUDIO | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)

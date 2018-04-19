@@ -8,9 +8,9 @@ import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AUDIO)
 foreign import setBuffer
   :: ∀ eff. AudioBuffer
   -> AudioBufferSourceNode
-  -> (Eff (wau :: AUDIO | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 foreign import startBufferSource
   :: ∀ eff. Number
   -> AudioBufferSourceNode
-  -> (Eff (wau :: AUDIO | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)

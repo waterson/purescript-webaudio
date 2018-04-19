@@ -5,4 +5,4 @@ import Audio.WebAudio.Types (AudioParam, GainNode, AUDIO)
 
 
 foreign import gain
-  :: forall eff. GainNode -> (Eff (wau :: AUDIO | eff) AudioParam)
+  :: forall eff. GainNode -> (Eff (audio :: AUDIO | eff) AudioParam)

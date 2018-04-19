@@ -25,14 +25,14 @@ readOscillatorType "triangle" = Triangle
 readOscillatorType "custom"   = Custom
 readOscillatorType _          = Sine
 
-frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: AUDIO | eff) AudioParam)
+frequency :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 
-oscillatorType :: ∀ eff. OscillatorNode -> (Eff (wau :: AUDIO | eff) OscillatorType)
+oscillatorType :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n
 
-setOscillatorType :: ∀ eff. OscillatorType -> OscillatorNode -> (Eff (wau :: AUDIO | eff) Unit)
+setOscillatorType :: ∀ eff. OscillatorType -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
 setOscillatorType t n = unsafeSetProp "type" n $ show t
 
-foreign import startOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: AUDIO | eff) Unit)
-foreign import stopOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: AUDIO | eff) Unit)
+foreign import startOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
+foreign import stopOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)

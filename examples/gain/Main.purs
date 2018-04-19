@@ -21,7 +21,7 @@ import Data.Newtype (wrap)
 -- | of the gain node to 0.3 (i.e., a 70% reduction)
 
 main :: Eff ( dom :: DOM
-            , wau :: AUDIO
+            , audio :: AUDIO
             , console :: CONSOLE
             , exception :: EXCEPTION
             ) Unit

@@ -18,7 +18,7 @@ toArrayBuffer hd =
     case hd of
       (ArrayBufferData a) -> a
 
-main :: forall eff. (Eff (wau :: AUDIO, dom :: DOM | eff) Unit)
+main :: forall eff. (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
   open GET "decode-audio.wav" req
@@ -29,7 +29,7 @@ main = do
 
 play :: forall eff. XMLHttpRequest -- |^ the request object
      -> DOMEvent -- |^ the load event
-     -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+     -> (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 play req ev = do
   ctx <- makeAudioContext
   src <- createBufferSource ctx
@@ -40,7 +40,7 @@ play req ev = do
 
 play0 :: forall eff. AudioBufferSourceNode
       -> AudioBuffer
-      -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+      -> (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 play0 src buf = do
   setBuffer buf src
   startBufferSource 0.0 src
