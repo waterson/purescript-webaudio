@@ -19,10 +19,10 @@ foreign import data GainNode :: Type
 foreign import data MediaElementAudioSourceNode :: Type
 foreign import data OscillatorNode :: Type
 
--- | Type synonym for the value (e.g., Volume) of an AudioParam
+-- | Type synonym for the value argument (e.g., Volume)
 type Value = Number
 
--- | Type synonym for time (in seconds)
+-- | Type synonym for time (in seconds) argument
 type Seconds = Number
 
 -- | Type synonym for possible values for AudioContextState
