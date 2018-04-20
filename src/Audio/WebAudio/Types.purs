@@ -2,9 +2,7 @@ module Audio.WebAudio.Types
   ( class AudioNode, AudioBuffer, AudioBufferSourceNode
   , AudioContext, AudioParam, DestinationNode
   , GainNode, MediaElementAudioSourceNode, OscillatorNode
-  , Value, Seconds, AUDIO, AudioContextState(..)) where
-
-import Prelude
+  , Value, Seconds, AUDIO ) where
 
 import Control.Monad.Eff (kind Effect)
 
@@ -24,17 +22,6 @@ type Value = Number
 
 -- | Type synonym for time (in seconds) argument
 type Seconds = Number
-
--- | Type synonym for possible values for AudioContextState
-
-data AudioContextState = SUSPENDED | RUNNING | CLOSED
-
-derive instance eqAudioContextState :: Eq AudioContextState
-instance showAudioContextState :: Show AudioContextState where
-  show SUSPENDED = "suspended"
-  show RUNNING = "running"
-  show CLOSED = "closed"
-
 
 class AudioNode n
 
