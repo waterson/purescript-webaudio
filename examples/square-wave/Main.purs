@@ -3,19 +3,20 @@ module SquareWave where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (connect, createGain, createOscillator, currentTime, destination, disconnect, makeAudioContext, state, resume, suspend)
+import Audio.WebAudio.AudioContext ( connect, createGain, createOscillator, currentTime, destination
+                                   , makeAudioContext, state, resume, suspend
+                                   )
 import Audio.WebAudio.AudioParam (getValue, setValue, setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Oscillator (OscillatorType(..), frequency, setOscillatorType, startOscillator)
 import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode, AudioContextState(..))
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, error, log)
+import Control.Monad.Eff.Console (CONSOLE, error)
 import Control.Monad.Eff.Exception (EXCEPTION, throw)
 import Control.Monad.Eff.Timer (TIMER, setTimeout)
 import DOM (DOM)
-import DOM.Event.Event (currentTarget)
 import DOM.Event.EventTarget (addEventListener, eventListener)
-import DOM.Event.Types (Event, EventTarget)
+import DOM.Event.Types (EventTarget)
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToParentNode)
 import DOM.HTML.Window (document)
@@ -23,6 +24,7 @@ import DOM.Node.ParentNode (querySelector)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (wrap)
 import Unsafe.Coerce (unsafeCoerce)
+
 
 beep :: ∀ e. AudioContext
      -> OscillatorNode
