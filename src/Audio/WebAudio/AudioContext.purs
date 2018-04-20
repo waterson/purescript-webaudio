@@ -2,12 +2,12 @@ module Audio.WebAudio.AudioContext
   ( makeAudioContext, createOscillator, createGain
   , createMediaElementSource, destination, currentTime
   , sampleRate, decodeAudioData, createBufferSource
-  , connect, disconnect
+  , connect, disconnect, resume, suspend, state
   ) where
 
 import Prelude
 
-import Audio.WebAudio.Types (class AudioNode, AudioBuffer, AudioContext, AudioBufferSourceNode, DestinationNode, GainNode, MediaElementAudioSourceNode, OscillatorNode, AUDIO)
+import Audio.WebAudio.Types (class AudioNode, AUDIO, AudioBuffer, AudioBufferSourceNode, AudioContext, AudioContextState(..), DestinationNode, GainNode, MediaElementAudioSourceNode, OscillatorNode, Seconds, Value)
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -16,6 +16,21 @@ import Data.ArrayBuffer.Types (ArrayBuffer)
 
 foreign import makeAudioContext
   :: ∀ eff. (Eff (audio :: AUDIO | eff) AudioContext)
+
+foreign import stateImpl :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) String
+
+state :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) AudioContextState
+state ctx = do
+  s <- stateImpl ctx
+  pure $ case s of
+    "suspended" -> SUSPENDED
+    "running" -> RUNNING
+    "closed" -> CLOSED
+    _ -> CLOSED
+
+foreign import resume  :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) Unit
+
+foreign import suspend :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) Unit
 
 foreign import createOscillator
   :: ∀ eff. AudioContext
@@ -37,11 +52,11 @@ destination = unsafeGetProp "destination"
 
 foreign import currentTime
   :: ∀ eff. AudioContext
-  -> (Eff (audio :: AUDIO | eff) Number)
+  -> (Eff (audio :: AUDIO | eff) Seconds)
 
 foreign import sampleRate
   :: ∀ eff. AudioContext
-  -> (Eff (audio :: AUDIO | eff) Number)
+  -> (Eff (audio :: AUDIO | eff) Value)
 
 
 foreign import decodeAudioData
@@ -56,9 +71,6 @@ foreign import createBufferSource
   :: ∀ eff. AudioContext
   -> (Eff (audio :: AUDIO | eff) AudioBufferSourceNode)
 
--- this is really a method on an AudioNode.
-
--- foreign import connect
 foreign import connect  :: ∀ m n eff. AudioNode m => AudioNode n => m
   -> n
   -> (Eff (audio :: AUDIO | eff) Unit)

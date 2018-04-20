@@ -4,6 +4,25 @@
 
 // module Audio.WebAudio.AudioContext
 
+exports.resume = function(ctx) {
+  return function() {
+    return ctx.resume();
+  };
+};
+
+exports.suspend = function(ctx) {
+  return function() {
+    return ctx.suspend();
+  };
+};
+
+exports.stateImpl = function(ctx) {
+  return function() {
+    return ctx.state;
+  };
+};
+
+
 exports.makeAudioContext = function() {
   return new (window.AudioContext || window.webkitAudioContext)();
 };

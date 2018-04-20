@@ -3,13 +3,13 @@ module SquareWave where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (connect, createGain, createOscillator, currentTime, destination, disconnect, makeAudioContext)
+import Audio.WebAudio.AudioContext (connect, createGain, createOscillator, currentTime, destination, disconnect, makeAudioContext, state, resume, suspend)
 import Audio.WebAudio.AudioParam (getValue, setValue, setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Oscillator (OscillatorType(..), frequency, setOscillatorType, startOscillator)
-import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode)
+import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode, AudioContextState(..))
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (log)
+import Control.Monad.Eff.Console (CONSOLE, error, log)
 import Control.Monad.Eff.Exception (EXCEPTION, throw)
 import Control.Monad.Eff.Timer (TIMER, setTimeout)
 import DOM (DOM)
@@ -19,7 +19,6 @@ import DOM.Event.Types (Event, EventTarget)
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToParentNode)
 import DOM.HTML.Window (document)
-import DOM.Node.Node (nodeName)
 import DOM.Node.ParentNode (querySelector)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (wrap)
@@ -41,45 +40,56 @@ beep ctx osc g = do
   _ <- setTimeout 1000 $ beep ctx osc g
   pure unit
 
--- playBeep :: ∀ e. AudioContext -> OscillatorNode -> GainNode -> Eff (audio :: AUDIO, timer :: TIMER | e) Unit
--- playBeep ctx osc g = do
---   connect osc g
---   connect g =<< destination ctx
---   beep ctx osc g
---   pure unit
+playBeep :: ∀ e. AudioContext
+         -> OscillatorNode
+         -> GainNode
+         -> Eff (audio :: AUDIO, timer :: TIMER, console :: CONSOLE | e) Unit
+playBeep ctx osc g = do
+  s <- state ctx
+  if (s == SUSPENDED)
+    then do
+      resume ctx
+      beep ctx osc g
+    else error "Press STOP before pressing PLAY again"
+  pure unit
+     
 
--- stopBeep :: ∀ e. AudioContext -> OscillatorNode -> GainNode -> Eff (audio :: AUDIO | e) Unit
--- stopBeep ctx osc g = do
---   disconnect osc g
---   disconnect g =<< destination ctx
---   pure unit
+stopBeep :: ∀ e. AudioContext -> Eff (audio :: AUDIO | e) Unit
+stopBeep ctx = do 
+  suspend ctx
+  pure unit
 
--- handler :: Event -> String
-handler e =
-  -- log $ ((currentTarget e) >>> nodeName)
-  log $ "handler"
 
--- main :: ∀ e. Eff (audio :: AUDIO, dom :: DOM, exception :: EXCEPTION, timer :: TIMER | e) Unit
+main ::
+  ∀ e. Eff ( console :: CONSOLE
+           , audio :: AUDIO
+           , dom :: DOM
+           , exception :: EXCEPTION
+           , timer :: TIMER | e
+           ) Unit
 main = do
   ctx <- makeAudioContext
 
-  -- osc <- createOscillator ctx
-  -- setOscillatorType Square osc
-  -- startOscillator 0.0 osc
+  osc <- createOscillator ctx
+  setOscillatorType Square osc
+  startOscillator 0.0 osc
 
-  -- g <- createGain ctx
-  -- setValue 0.0 =<< gain g
+  g <- createGain ctx
+  setValue 0.0 =<< gain g
 
+  connect osc g
+  connect g =<< destination ctx
+
+  suspend ctx
+  
   doc <- map htmlDocumentToParentNode (window >>= document)
   play <- querySelector (wrap "#play") doc
   case play of 
-    Just e -> addEventListener (wrap "click") (eventListener handler) false (unsafeCoerce e :: EventTarget)
-    -- Just e -> addEventListener (wrap "click") (eventListener \_ ->  playBeep ctx osc g) false (unsafeCoerce e :: EventTarget)
+    Just e -> addEventListener (wrap "click") (eventListener \_ ->  playBeep ctx osc g) false (unsafeCoerce e :: EventTarget)
     Nothing -> throw "No 'play' button"
   stop <- querySelector (wrap "#stop") doc
   case stop of 
-    -- Just e -> addEventListener (wrap "click") (eventListener \_ -> stopBeep ctx osc g) false (unsafeCoerce e :: EventTarget)
-    Just e -> addEventListener (wrap "click") (eventListener handler) false (unsafeCoerce e :: EventTarget)
+    Just e -> addEventListener (wrap "click") (eventListener \_ -> stopBeep ctx) false (unsafeCoerce e :: EventTarget)
     Nothing -> throw "No 'stop' button"
   pure unit
 
