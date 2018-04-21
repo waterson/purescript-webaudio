@@ -32,6 +32,7 @@
     "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0",
     "purescript-dom": "^4.16.0",
-    "purescript-js-timers": "^3.0.0"
+    "purescript-js-timers": "^3.0.0",
+    "purescript-refs": "^3.0.0"
   }
 }

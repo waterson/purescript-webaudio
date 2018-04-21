@@ -2,7 +2,9 @@ module Gain where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (connect, createGain, createMediaElementSource, currentTime, destination, makeAudioContext, sampleRate)
+import Audio.WebAudio.BaseAudioContext (createGain, currentTime, destination, newAudioContext, sampleRate)
+import Audio.WebAudio.AudioContext (createMediaElementSource)
+import Audio.WebAudio.AudioNode (connect)
 import Audio.WebAudio.AudioParam (setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Types (AUDIO)
@@ -30,7 +32,7 @@ main = do
   noise <- getElementById (wrap "noise") doc
   case noise of
     Just el -> void do
-      cx <- makeAudioContext
+      cx <- newAudioContext
       src <- createMediaElementSource cx el
       gainNode <- createGain cx
       dest <- destination cx
