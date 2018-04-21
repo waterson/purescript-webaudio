@@ -1,17 +1,32 @@
 {
   "name": "purescript-webaudio",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A PureScript wrapper for the HTML5 Web Audio API",
   "main": "",
+  "scripts": {
+    "postinstall": "bower install",
+    "build:clean": "rm -rf dist output examples/*/output",
+    "build": "pulp build",
+    "build:example:square-wave": "pulp browserify --main SquareWave --to examples/square-wave/output/bundle.js -I examples/square-wave",
+    "exec:example:square-wave": "cd examples/square-wave/ && python -m SimpleHTTPServer 8000",
+    "build:example:gain": "pulp build --main Gain --to examples/gain/output/bundle.js -I examples/gain",
+    "exec:example:gain": "cd examples/gain/ && python -m SimpleHTTPServer 8000",
+    "build:example:decode": "pulp build --main DecodeAudio --to examples/decode/output/bundle.js -I examples/decode",
+    "exec:example:decode": "cd examples/decode/ && python -m SimpleHTTPServer 8000"
+  },
   "private": true,
   "author": {
     "name": "Chris Waterson",
     "email": "waterson@maubi.net"
   },
+  "contributors": [
+    {
+      "name": "Alex Kelley",
+      "email": "",
+      "url": "https://github.com/adkelley"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-purescript": "*",
-    "http-server": "*"
   }
 }

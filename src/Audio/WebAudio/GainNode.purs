@@ -1,9 +1,8 @@
-module Audio.WebAudio.GainNode where
+module Audio.WebAudio.GainNode (gain) where
 
-import Control.Monad.Eff
-import Audio.WebAudio.Types
+import Control.Monad.Eff (Eff)
+import Audio.WebAudio.Types (AudioParam, GainNode, AUDIO)
 
 
 foreign import gain
-  :: forall wau eff. GainNode -> (Eff (wau :: WebAudio | eff) AudioParam)
-
+  :: forall eff. GainNode -> (Eff (audio :: AUDIO | eff) AudioParam)

@@ -1,54 +1,14 @@
-module Audio.WebAudio.AudioContext where
+module Audio.WebAudio.AudioContext
+  ( createMediaElementSource
+  ) where
 
-import Prelude
-import Control.Monad.Eff
-import Data.Maybe
-import Data.DOM.Simple.Ajax
-import Audio.WebAudio.Types
-import Audio.WebAudio.Utils
+import Audio.WebAudio.Types (AUDIO, AudioContext, MediaElementAudioSourceNode)
+import Control.Monad.Eff (Eff)
 
-
-foreign import makeAudioContext
-  :: forall wau eff. (Eff (wau :: WebAudio | eff) AudioContext)
-
-foreign import createOscillator
-  :: forall wau eff. AudioContext
-  -> (Eff (wau :: WebAudio | eff) OscillatorNode)
-
-foreign import createGain
-  :: forall wau eff. AudioContext
-  -> (Eff (wau :: WebAudio | eff) GainNode)
-
+-- | Creates a MediaElementAudioSourceNode given an HTMLMediaElement. As a consequence of
+-- | calling this method, audio playback from the HTMLMediaElement will be re-routed into
+-- | the processing graph of the AudioContext.
 foreign import createMediaElementSource
-  :: forall elt wau dom eff. AudioContext
-  -> elt -- |^ a DOM element from which to construct the source node
-  -> (Eff (wau :: WebAudio | eff) MediaElementAudioSourceNode)
-
-destination :: forall wau eff. AudioContext
-            -> (Eff (wau :: WebAudio | eff) DestinationNode)
-
-destination = unsafeGetProp "destination"
-
-foreign import currentTime
-  :: forall wau eff. AudioContext
-  -> (Eff (wau :: WebAudio | eff) Number)
-
-foreign import decodeAudioData
-  :: forall wau e f.
-     AudioContext
-  -> ArrayBuffer
-  -> (AudioBuffer -> Eff (wau :: WebAudio | e) Unit) -- sucesss
-  -> (String -> Eff (wau :: WebAudio | e) Unit) -- failure
-  -> (Eff (wau :: WebAudio | f) Unit)
-
-foreign import createBufferSource
-  :: forall wau eff. AudioContext
-  -> (Eff (wau :: WebAudio | eff) AudioBufferSourceNode)
-
--- XXX this is really a method on an AudioNode.
-
-foreign import connect
-  :: forall m n wau eff. (AudioNode m, AudioNode n) => m
-  -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
-
+  :: ∀ elt eff. AudioContext
+  -> elt -- |^ a DOM element from which to construct the source node. todo: HTML?
+  -> (Eff (audio :: AUDIO | eff) MediaElementAudioSourceNode)
