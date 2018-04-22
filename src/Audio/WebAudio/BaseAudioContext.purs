@@ -6,11 +6,10 @@ module Audio.WebAudio.BaseAudioContext
 
 import Prelude
 
-import Audio.WebAudio.BaseAudioContextTypes (AudioContextState(..))
 import Audio.WebAudio.Types
   ( AUDIO, AudioBuffer, AudioBufferSourceNode, AudioContext
   , DestinationNode, GainNode, OscillatorNode
-  , Seconds, Value)
+  , Seconds, Value, AudioContextState(..))
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -40,18 +39,18 @@ foreign import currentTime
 -- | An AudioListener which is used for 3D spatialization.
 -- | todo: listener :: ..
 
-foreign import stateImpl :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) String
+foreign import _state :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) String
 
 -- | Describes the current state of this BaseAudioContext. (reaonly)
 state :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) AudioContextState
 state ctx = do
-  s <- stateImpl ctx
+  s <- _state ctx
   pure $
     case s of
       "suspended" -> SUSPENDED
       "running" -> RUNNING
       "closed" -> CLOSED
-      _ -> CLOSED
+      _ -> CLOSED -- ^avoid making a Partial instance
 
 foreign import suspend :: ∀ eff. AudioContext -> Eff (audio :: AUDIO | eff) Unit
 

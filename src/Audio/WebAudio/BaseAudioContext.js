@@ -16,7 +16,7 @@ exports.currentTime = function(cx) {
   };
 };
 
-exports.stateImpl = function(ctx) {
+exports._state = function(ctx) {
   return function() {
     return ctx.state;
   };

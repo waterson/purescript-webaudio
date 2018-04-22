@@ -3,13 +3,12 @@ module SquareWave where
 
 import Prelude
 
+import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode, AudioContextState(..))
 import Audio.WebAudio.AudioNode (connect)
-import Audio.WebAudio.BaseAudioContextTypes (AudioContextState(..))
 import Audio.WebAudio.BaseAudioContext (createGain, createOscillator, currentTime, destination, newAudioContext, resume, state, suspend)
 import Audio.WebAudio.AudioParam (getValue, setValue, setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Oscillator (OscillatorType(..), frequency, setOscillatorType, startOscillator)
-import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION, throw)
 import Control.Monad.Eff.Ref (REF, Ref, newRef, readRef, writeRef)
