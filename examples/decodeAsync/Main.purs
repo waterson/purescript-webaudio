@@ -3,7 +3,7 @@ module DecodeAsync where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
-import Audio.WebAudio.AudioContext (createBufferSource, currentTime, decodeAudioDataAsync, destination, makeAudioContext)
+import Audio.WebAudio.BaseAudioContext (createBufferSource, currentTime, decodeAudioDataAsync, destination, newAudioContext)
 import Audio.WebAudio.Types (AudioContext, AudioBuffer, AUDIO, connect)
 import Control.Monad.Aff (Aff, Fiber, launchAff)
 import Control.Monad.Eff (Eff)
@@ -83,7 +83,7 @@ main :: ∀ eff.
        Unit
     )
 main = launchAff $ do
-  ctx <- liftEff makeAudioContext
+  ctx <- liftEff newAudioContext
   buffers <- loadSoundBuffers ctx ["hihat.wav", "kick.wav", "snare.wav"]
   _ <- liftEff $ playSoundAt ctx (buffers !! 0) 0.0
   _ <- liftEff $ playSoundAt ctx (buffers !! 1) 0.5

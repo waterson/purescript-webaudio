@@ -5,9 +5,9 @@ module TestProps where
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd)
-import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
+import Audio.WebAudio.BaseAudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
      createOscillator, createAnalyser, createStereoPanner, createDynamicsCompressor,
-     createConvolver, makeAudioContext, destination)
+     createConvolver, newAudioContext, destination)
 import Audio.WebAudio.Types (AUDIO, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
@@ -26,7 +26,7 @@ import Test.Assert (ASSERT, assert')
 
 main :: ∀ eff.(Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
 main = do
-  ctx <- makeAudioContext
+  ctx <- newAudioContext
   _ <- sourceBufferTests ctx
   _ <- biquadFilterTests ctx
   _ <- delayNodeTests ctx

@@ -36,7 +36,8 @@
     "purescript-dom": "^4.16.0",
     "purescript-js-timers": "^3.0.0",
     "purescript-affjax": "^5.0.0",
-    "purescript-assert": "^3.0.0"
+    "purescript-assert": "^3.0.0",
+    "purescript-refs": "^3.0.0"
   },
   "resolutions": {
     "purescript-arraybuffer-types": "^2.0.0"

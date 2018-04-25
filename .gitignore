@@ -2,7 +2,7 @@
 .DS_Store
 .psc-ide-port
 .psci
-html/*.js
 bower_components
 node_modules
 output
+deprecated

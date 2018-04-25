@@ -5,11 +5,12 @@ module Audio.WebAudio.Types
   , GainNode, MediaElementAudioSourceNode
   , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode
   , DynamicsCompressorNode, ConvolverNode, AUDIO
+  , AudioContextState(..), AudioContextPlaybackCategory(..)
+  , Value, Seconds
   , connect, disconnect, connectParam) where
 
 import Control.Monad.Eff (kind Effect, Eff)
-import Prelude (Unit, pure, unit)
-
+import Prelude (class Show, class Eq, Unit, pure, unit)
 foreign import data AUDIO :: Effect
 
 foreign import data AudioBuffer :: Type
@@ -29,6 +30,29 @@ foreign import data ConvolverNode :: Type
 
 -- | a 'raw' web-audio node
 class RawAudioNode n
+
+data AudioContextState = SUSPENDED | RUNNING | CLOSED
+
+derive instance eqAudioContextState :: Eq AudioContextState
+instance showAudioContextState :: Show AudioContextState where
+  show SUSPENDED = "suspended"
+  show RUNNING = "running"
+  show CLOSED = "closed"
+
+data AudioContextPlaybackCategory = BALANCED | INTERACTIVE | PLAYBACK
+derive instance eqAudioPlaybackCategory :: Eq AudioContextPlaybackCategory
+instance showAudioContextPlaybackCategory :: Show AudioContextPlaybackCategory where
+  show BALANCED = "balanced"
+  show INTERACTIVE = "interactive"
+  show PLAYBACK = "playback"
+
+
+-- | Type synonym for the value argument (e.g., Volume)
+type Value = Number
+
+-- | Type synonym for time (in seconds) argument
+type Seconds = Number
+
 
 instance audioNodeAudioBufferSourceNodeconnectParam :: RawAudioNode AudioBufferSourceNode
 instance audioNodeMediaElementAudioSourceNode :: RawAudioNode MediaElementAudioSourceNode
@@ -140,7 +164,7 @@ foreign import nodeDisconnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n 
   -> n
   -> (Eff (audio :: AUDIO | eff) Unit)
 
--- | experimental
+-- | Connect a source Node to a parameter on a destination Node. 
 -- | the String parameter names an audio parameter on the target node, n
 -- | this function connects this audio parameter to node m
 -- |

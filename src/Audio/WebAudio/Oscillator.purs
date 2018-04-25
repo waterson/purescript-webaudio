@@ -29,7 +29,6 @@ readOscillatorType _          = Sine
 derive instance eqOscillatorType :: Eq OscillatorType
 derive instance ordOscillatorType :: Ord OscillatorType
 
-
 frequency :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO| eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 

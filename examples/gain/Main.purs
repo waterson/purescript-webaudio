@@ -2,7 +2,8 @@ module Gain where
 
 import Prelude
 
-import Audio.WebAudio.AudioContext (createGain, createMediaElementSource, currentTime, destination, makeAudioContext, sampleRate)
+import Audio.WebAudio.BaseAudioContext (createGain, currentTime, destination, newAudioContext, sampleRate)
+import Audio.WebAudio.AudioContext (createMediaElementSource)
 import Audio.WebAudio.AudioParam (setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
 import Audio.WebAudio.Types (connect, AUDIO)
@@ -18,7 +19,7 @@ import Data.Maybe (Maybe(..))
 import Data.Newtype (wrap)
 
 -- | 3 secs after the audio begins playing, set the value (i.e., volume)
--- | of the gain node to 0.1
+-- | of the gain node to 0.3 (i.e., a 70% reduction)
 
 main :: Eff ( dom :: DOM
             , audio :: AUDIO
@@ -26,18 +27,18 @@ main :: Eff ( dom :: DOM
             , exception :: EXCEPTION
             ) Unit
 main = do
-  doc <- map htmlDocumentToNonElementParentNode (document =<< window)
+  doc <- map htmlDocumentToNonElementParentNode (window >>= document)
   noise <- getElementById (wrap "noise") doc
   case noise of
     Just el -> void do
-      cx <- makeAudioContext
+      cx <- newAudioContext
       src <- createMediaElementSource cx el
       gainNode <- createGain cx
       dest <- destination cx
       connect src gainNode
       connect gainNode dest
-      gainValue <- gain gainNode
-      _ <- setValueAtTime 0.1 3.0 gainValue
+      gainParam <- gain gainNode
+      _ <- setValueAtTime 0.3 3.0 gainParam
       sr <- sampleRate cx
       logShow sr
       t <- currentTime cx
