@@ -47,7 +47,7 @@ exports.linearRampToValueAtTime = function(value) {
   return function(endTime) {
     return function(param) {
       return function() {
-        param.lienarRampToValueAtTime(value, endTime);
+        param.linearRampToValueAtTime(value, endTime);
       };
     };
   };
