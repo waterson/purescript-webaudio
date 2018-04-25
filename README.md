@@ -36,7 +36,6 @@ To run the test suite
 * Updated `API.md` to reflect `decodeAudioData` error handling change
 * New type synomymns `Value` and `Seconds` for `AudioParam` methods
 * Eliminated `gulp`, putting new build test scripts in `package.json`
-* 
 * Added `decodeAudioDataAsync` to `BaseAudioContext`. This runs in Aff not Eff but has the advantage that audio buffers can be returned directly. This, of course, introduces a dependency on Aff 4.0.0 and requires users to lift the original Eff functions into Aff if they wish to use it. I hope that this overhead should not be too restrictive given that a natural way to load sound resources is via Aff anyway.
 * Added `decodeAsync` to illustrate basic usage. devDependencies now include `Affjax`.
 * Added `test/props` to test some simple properties of the new Node types.
@@ -56,6 +55,3 @@ To run the test suite
 
 ## newlandsvalley ToDo:
 * Document the changes from merging my fork
-
-
->>>>>>> upstream/ver/psc-update
