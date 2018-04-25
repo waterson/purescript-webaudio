@@ -1,10 +1,10 @@
-module Test03 where
+module DecodeAudio where
 
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
 import Audio.WebAudio.AudioContext (createBufferSource, decodeAudioData, destination, makeAudioContext)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio, connect)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, connect, AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (warn)
 import DOM (DOM)
@@ -18,10 +18,10 @@ toArrayBuffer hd =
     case hd of
       (ArrayBufferData a) -> a
 
-main :: forall eff. (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+main :: forall eff. (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 main = do
   req <- makeXMLHttpRequest
-  open GET "siren.wav" req
+  open GET "decode-audio.wav" req
   setResponseType "arraybuffer" req
   addProgressEventListener ProgressLoadEvent (play req) req
   send NoData req
@@ -29,7 +29,7 @@ main = do
 
 play :: forall eff. XMLHttpRequest -- |^ the request object
      -> DOMEvent -- |^ the load event
-     -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+     -> (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 play req ev = do
   ctx <- makeAudioContext
   src <- createBufferSource ctx
@@ -40,7 +40,7 @@ play req ev = do
 
 play0 :: forall eff. AudioBufferSourceNode
       -> AudioBuffer
-      -> (Eff (wau :: WebAudio, dom :: DOM | eff) Unit)
+      -> (Eff (audio :: AUDIO, dom :: DOM | eff) Unit)
 play0 src buf = do
   setBuffer buf src
   startBufferSource 0.0 src

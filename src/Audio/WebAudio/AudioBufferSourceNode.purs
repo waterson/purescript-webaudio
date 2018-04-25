@@ -4,38 +4,38 @@ module Audio.WebAudio.AudioBufferSourceNode
 
 import Prelude
 import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, WebAudio)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AUDIO)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 
 foreign import setBuffer
   :: ∀ eff. AudioBuffer
   -> AudioBufferSourceNode
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 foreign import startBufferSource
   :: ∀ eff. Number
   -> AudioBufferSourceNode
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 foreign import stopBufferSource
   :: ∀ eff. Number
   -> AudioBufferSourceNode
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
-loop :: ∀ eff. AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Boolean)
+loop :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Boolean)
 loop = unsafeGetProp "loop"
 
-setLoop :: ∀ eff. Boolean -> AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Unit)
+setLoop :: ∀ eff. Boolean -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
 setLoop l n = unsafeSetProp "loop" n l
 
-loopStart :: ∀ eff. AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Number)
+loopStart :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Number)
 loopStart = unsafeGetProp "loopStart"
 
-setLoopStart :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Unit)
+setLoopStart :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
 setLoopStart l n = unsafeSetProp "loopStart" n l
 
-loopEnd :: ∀ eff. AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Number)
+loopEnd :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Number)
 loopEnd = unsafeGetProp "loopEnd"
 
-setLoopEnd :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (wau :: WebAudio | eff) Unit)
+setLoopEnd :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
 setLoopEnd l n = unsafeSetProp "loopEnd" n l

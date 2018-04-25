@@ -12,9 +12,3 @@ exports.setBuffer = function(buf) {
     };
   };
 };
-
-exports.pan = function(node) {
-  return function() {
-    return node.pan;
-  };
-};

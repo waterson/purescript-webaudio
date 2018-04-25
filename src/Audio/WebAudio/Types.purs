@@ -4,13 +4,13 @@ module Audio.WebAudio.Types
   , AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
   , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode
-  , DynamicsCompressorNode, ConvolverNode, WebAudio
+  , DynamicsCompressorNode, ConvolverNode, AUDIO
   , connect, disconnect, connectParam) where
 
 import Control.Monad.Eff (kind Effect, Eff)
 import Prelude (Unit, pure, unit)
 
-foreign import data WebAudio :: Effect
+foreign import data AUDIO :: Effect
 
 foreign import data AudioBuffer :: Type
 foreign import data AudioBufferSourceNode :: Type
@@ -45,9 +45,9 @@ instance audioNodeDynamicsCConvolverNode :: RawAudioNode ConvolverNode
 -- | a web audio node that is connectable/disconnectable from another node
 -- | or whose parameter(s) may be connectable from another node
 class Connectable target where
-  connect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (wau :: WebAudio | eff) Unit)
-  disconnect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (wau :: WebAudio | eff) Unit)
-  connectParam  :: ∀ eff source. RawAudioNode source => source -> target -> String -> (Eff (wau :: WebAudio | eff) Unit)
+  connect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (audio :: AUDIO | eff) Unit)
+  disconnect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (audio :: AUDIO | eff) Unit)
+  connectParam  :: ∀ eff source. RawAudioNode source => source -> target -> String -> (Eff (audio :: AUDIO| eff) Unit)
 
 instance connectableGainNode :: Connectable GainNode where
   connect = nodeConnect
@@ -132,13 +132,13 @@ instance connectableAudioNode :: Connectable AudioNode where
 -- foreign import connect
 foreign import nodeConnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
   -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 -- There are multiple disconnect options - this one seems the most useful
 -- foreign import disconnectRawA
 foreign import nodeDisconnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
   -> n
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 -- | experimental
 -- | the String parameter names an audio parameter on the target node, n
@@ -153,7 +153,7 @@ foreign import nodeDisconnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n 
 foreign import unsafeConnectParam  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
   -> n
   -> String
-  -> (Eff (wau :: WebAudio | eff) Unit)
+  -> (Eff (audio :: AUDIO | eff) Unit)
 
 data AudioNode =
     Gain GainNode

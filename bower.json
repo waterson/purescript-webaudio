@@ -1,10 +1,12 @@
 {
   "name": "purescript-webaudio",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A PureScript wrapper for the WebAudio API.",
   "authors": [
     "Chris Waterson <waterson@maubi.net>",
-    "Sean Seefried <sean.seefried@gmail.com>"
+    "Sean Seefried <sean.seefried@gmail.com>",
+    "Alex Kelley <github.com/adkelley>",
+    "John Watson <github.com/newlandsvalley>"
   ],
   "license": "MIT",
   "private": true,
@@ -29,11 +31,10 @@
     "jacereda/purescript-arraybuffer": "^6.0.0"
   },
   "devDependencies": {
-    "purescript-dom": "^4.8.2",
-    "purescript-js-timers": "^3.0.0",
-    "purescript-partial": "^1.2.1",
     "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0",
+    "purescript-dom": "^4.16.0",
+    "purescript-js-timers": "^3.0.0",
     "purescript-affjax": "^5.0.0",
     "purescript-assert": "^3.0.0"
   },

@@ -42,17 +42,17 @@ readBiquadFilterType "notch"     = Notch
 readBiquadFilterType "allpass"   = Allpass
 readBiquadFilterType _           = Lowpass
 
-filterType :: ∀ eff. BiquadFilterNode -> (Eff (wau :: WebAudio | eff) BiquadFilterType)
+filterType :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) BiquadFilterType)
 filterType n = readBiquadFilterType <$> unsafeGetProp "type" n
 
-setFilterType :: ∀ eff. BiquadFilterType -> BiquadFilterNode -> (Eff (wau :: WebAudio | eff) Unit)
+setFilterType :: ∀ eff. BiquadFilterType -> BiquadFilterNode -> (Eff (audio :: AUDIO | eff) Unit)
 setFilterType t n = unsafeSetProp "type" n (show t)
 
-filterFrequency :: ∀ eff. BiquadFilterNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+filterFrequency :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 filterFrequency = unsafeGetProp "frequency"
 
-quality :: ∀ eff. BiquadFilterNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+quality :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 quality = unsafeGetProp "Q"
 
 foreign import gain
-  :: forall eff. BiquadFilterNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)

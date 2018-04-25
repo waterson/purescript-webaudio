@@ -1,7 +1,7 @@
 module Audio.WebAudio.StereoPannerNode where
 
 import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioParam, StereoPannerNode, WebAudio)
+import Audio.WebAudio.Types (AudioParam, StereoPannerNode, AUDIO)
 
 foreign import pan
-  :: forall eff. StereoPannerNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. StereoPannerNode -> (Eff (audio :: AUDIO | eff) AudioParam)

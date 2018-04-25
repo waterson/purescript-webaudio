@@ -1,10 +1,10 @@
-module Test04 where
+module DecodeAsync where
 
 import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
 import Audio.WebAudio.AudioContext (createBufferSource, currentTime, decodeAudioDataAsync, destination, makeAudioContext)
-import Audio.WebAudio.Types (AudioContext, AudioBuffer, WebAudio, connect)
+import Audio.WebAudio.Types (AudioContext, AudioBuffer, AUDIO, connect)
 import Control.Monad.Aff (Aff, Fiber, launchAff)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
@@ -24,7 +24,7 @@ loadSoundBuffer :: ∀ eff.
   -> String
   -> Aff
      ( ajax :: AJAX
-     , wau :: WebAudio
+     , audio :: AUDIO
      | eff
      )
      AudioBuffer
@@ -39,7 +39,7 @@ loadSoundBuffers :: ∀ e.
   -> (Array String)
   -> Aff
      ( ajax :: AJAX
-     , wau :: WebAudio
+     , audio :: AUDIO
      | e
      )
      (Array AudioBuffer)
@@ -52,7 +52,7 @@ playSoundAt  :: ∀ eff.
   -> Maybe AudioBuffer
   -> ElapsedTime
   -> Eff
-      ( wau :: WebAudio
+      ( audio :: AUDIO
       | eff )
       Unit
 playSoundAt ctx mbuffer elapsedTime =
@@ -72,12 +72,12 @@ playSoundAt ctx mbuffer elapsedTime =
 main :: ∀ eff.
   Eff
     ( ajax :: AJAX
-    , wau :: WebAudio
+    , audio :: AUDIO
     | eff
     )
     (Fiber
        ( ajax :: AJAX
-       , wau :: WebAudio
+       , audio :: AUDIO
        | eff
        )
        Unit

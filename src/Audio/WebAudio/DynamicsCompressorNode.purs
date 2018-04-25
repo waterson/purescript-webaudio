@@ -1,25 +1,24 @@
 module Audio.WebAudio.DynamicsCompressorNode where
 
-import Prelude (Unit)
 import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioParam, DynamicsCompressorNode, WebAudio)
-import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
+import Audio.WebAudio.Types (AudioParam, DynamicsCompressorNode, AUDIO)
+import Audio.WebAudio.Utils (unsafeGetProp)
 
 foreign import threshold
-  :: forall eff. DynamicsCompressorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. DynamicsCompressorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 
 foreign import knee
-  :: forall eff. DynamicsCompressorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. DynamicsCompressorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 
 foreign import ratio
-  :: forall eff. DynamicsCompressorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. DynamicsCompressorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 
 -- | reduction is read-only
-reduction :: ∀ eff. DynamicsCompressorNode  -> (Eff (wau :: WebAudio | eff) Number)
+reduction :: ∀ eff. DynamicsCompressorNode  -> (Eff (audio :: AUDIO | eff) Number)
 reduction n = unsafeGetProp "reduction" n
 
 foreign import attack
-  :: forall eff. DynamicsCompressorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. DynamicsCompressorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 
 foreign import release
-  :: forall eff. DynamicsCompressorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+  :: forall eff. DynamicsCompressorNode -> (Eff (audio :: AUDIO | eff) AudioParam)

@@ -5,7 +5,7 @@ module Audio.WebAudio.Oscillator
 
 import Prelude
 import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioParam, OscillatorNode, WebAudio)
+import Audio.WebAudio.Types (AudioParam, OscillatorNode, AUDIO)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 import Audio.WebAudio.AudioParam (setValue)
 
@@ -30,25 +30,25 @@ derive instance eqOscillatorType :: Eq OscillatorType
 derive instance ordOscillatorType :: Ord OscillatorType
 
 
-frequency :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+frequency :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO| eff) AudioParam)
 frequency = unsafeGetProp "frequency"
 
-setFrequency :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setFrequency :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO| eff) Unit)
 setFrequency num node =
   setValue num =<< frequency node
 
-detune :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) AudioParam)
+detune :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
 detune = unsafeGetProp "detune"
 
-setDetune :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setDetune :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
 setDetune num node =
   setValue num =<< detune node
 
-oscillatorType :: ∀ eff. OscillatorNode -> (Eff (wau :: WebAudio | eff) OscillatorType)
+oscillatorType :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n
 
-setOscillatorType :: ∀ eff. OscillatorType -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+setOscillatorType :: ∀ eff. OscillatorType -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
 setOscillatorType t n = unsafeSetProp "type" n $ show t
 
-foreign import startOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
-foreign import stopOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import startOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
+foreign import stopOscillator :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)

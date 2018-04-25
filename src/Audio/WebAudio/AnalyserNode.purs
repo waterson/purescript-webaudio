@@ -7,7 +7,7 @@ module Audio.WebAudio.AnalyserNode
 
 import Prelude (Unit)
 import Data.ArrayBuffer.Types (ByteLength, Uint8Array, Float32Array)
-import Audio.WebAudio.Types (AnalyserNode, WebAudio)
+import Audio.WebAudio.Types (AnalyserNode, AUDIO)
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 
@@ -16,42 +16,42 @@ import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 -- | from 32 to 32768; its default value is 2048.
 -- | If its value is not a power of 2, or it is outside the specified range,
 -- | the exception INDEX_SIZE_ERR is thrown.
-fftSize :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) ByteLength)
+fftSize :: ∀ eff. AnalyserNode -> (Eff (audio :: AUDIO | eff) ByteLength)
 fftSize n = unsafeGetProp "fftSize" n
 
-setFftSize :: ∀ eff. ByteLength -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setFftSize :: ∀ eff. ByteLength -> AnalyserNode -> (Eff (audio :: AUDIO | eff) Unit)
 setFftSize size n = unsafeSetProp "fftSize" n size
 
-frequencyBinCount :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) ByteLength)
+frequencyBinCount :: ∀ eff. AnalyserNode -> (Eff (audio :: AUDIO | eff) ByteLength)
 frequencyBinCount n = unsafeGetProp "frequencyBinCount" n
 
-setFrequencyBinCount :: ∀ eff. ByteLength -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setFrequencyBinCount :: ∀ eff. ByteLength -> AnalyserNode -> (Eff (audio :: AUDIO | eff) Unit)
 setFrequencyBinCount count n = unsafeSetProp "frequencyBinCount" n count
 
-minDecibels :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) Number)
+minDecibels :: ∀ eff. AnalyserNode -> (Eff (audio :: AUDIO | eff) Number)
 minDecibels n = unsafeGetProp "minDecibels" n
 
-setMinDecibels :: ∀ eff. Number -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setMinDecibels :: ∀ eff. Number -> AnalyserNode -> (Eff (audio :: AUDIO | eff) Unit)
 setMinDecibels db n = unsafeSetProp "minDecibels" n db
 
-maxDecibels :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) Number)
+maxDecibels :: ∀ eff. AnalyserNode -> (Eff (audio :: AUDIO | eff) Number)
 maxDecibels n = unsafeGetProp "maxDecibels" n
 
-setMaxDecibels :: ∀ eff. Number -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setMaxDecibels :: ∀ eff. Number -> AnalyserNode -> (Eff (audio :: AUDIO | eff) Unit)
 setMaxDecibels db n = unsafeSetProp "maxDecibels" n db
 
-smoothingTimeConstant :: ∀ eff. AnalyserNode -> (Eff (wau :: WebAudio | eff) Number)
+smoothingTimeConstant :: ∀ eff. AnalyserNode -> (Eff (audio :: AUDIO | eff) Number)
 smoothingTimeConstant n = unsafeGetProp "smoothingTimeConstant" n
 
-setSmoothingTimeConstant :: ∀ eff. Number -> AnalyserNode -> (Eff (wau :: WebAudio | eff) Unit)
+setSmoothingTimeConstant :: ∀ eff. Number -> AnalyserNode -> (Eff (audio :: AUDIO | eff) Unit)
 setSmoothingTimeConstant tc n = unsafeSetProp "smoothingTimeConstant" n tc
 
 
 
-foreign import getFloatFrequencyData :: ∀ eff. AnalyserNode -> Float32Array -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import getFloatFrequencyData :: ∀ eff. AnalyserNode -> Float32Array -> (Eff (audio :: AUDIO | eff) Unit)
 
-foreign import getByteFrequencyData :: ∀ eff. AnalyserNode -> Uint8Array -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import getByteFrequencyData :: ∀ eff. AnalyserNode -> Uint8Array -> (Eff (audio :: AUDIO | eff) Unit)
 
-foreign import getFloatTimeDomainData :: ∀ eff. AnalyserNode -> Float32Array -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import getFloatTimeDomainData :: ∀ eff. AnalyserNode -> Float32Array -> (Eff (audio :: AUDIO | eff) Unit)
 
-foreign import getByteTimeDomainData :: ∀ eff. AnalyserNode -> Uint8Array -> (Eff (wau :: WebAudio | eff) Unit)
+foreign import getByteTimeDomainData :: ∀ eff. AnalyserNode -> Uint8Array -> (Eff (audio :: AUDIO | eff) Unit)

@@ -8,7 +8,7 @@ import Audio.WebAudio.AudioBufferSourceNode (loop, setLoop, loopStart, setLoopSt
 import Audio.WebAudio.AudioContext (createBufferSource, createBiquadFilter, createDelay, createGain,
      createOscillator, createAnalyser, createStereoPanner, createDynamicsCompressor,
      createConvolver, makeAudioContext, destination)
-import Audio.WebAudio.Types (WebAudio, AudioContext, AudioNode(..), connect, connectParam)
+import Audio.WebAudio.Types (AUDIO, AudioContext, AudioNode(..), connect, connectParam)
 import Audio.WebAudio.BiquadFilterNode (BiquadFilterType(..), filterFrequency, filterType, setFilterType, quality)
 import Audio.WebAudio.GainNode (gain, setGain)
 import Audio.WebAudio.DelayNode (delayTime)
@@ -24,7 +24,7 @@ import Data.ArrayBuffer.ArrayBuffer (ARRAY_BUFFER)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Test.Assert (ASSERT, assert')
 
-main :: ∀ eff.(Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
+main :: ∀ eff.(Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
 main = do
   ctx <- makeAudioContext
   _ <- sourceBufferTests ctx
@@ -37,7 +37,7 @@ main = do
   _ <- convolverNodeTests ctx
   connectionTests ctx
 
-sourceBufferTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+sourceBufferTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 sourceBufferTests ctx = do
   src <- createBufferSource ctx
   _ <- setLoop true src
@@ -52,7 +52,7 @@ sourceBufferTests ctx = do
   log "source buffer tests passed"
 
 
-biquadFilterTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+biquadFilterTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 biquadFilterTests ctx = do
   filter <- createBiquadFilter ctx
   fType <- filterType filter
@@ -76,7 +76,7 @@ biquadFilterTests ctx = do
   _ <- assert' "incorrect set filter quality" (q' == 30.0)
   log "biquad filter tests passed"
 
-delayNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+delayNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 delayNodeTests ctx = do
   delayNode <- createDelay ctx
   delayParam <- delayTime delayNode
@@ -86,7 +86,7 @@ delayNodeTests ctx = do
   _ <- assert' ("incorrect delay time: " <> (show delay)) (delay == 0.75)
   log "delay node tests passed"
 
-gainNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+gainNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 gainNodeTests ctx = do
   gainNode <- createGain ctx
   _ <- setGain 30.0 gainNode
@@ -95,7 +95,7 @@ gainNodeTests ctx = do
   _ <- assert' ("shorthand set gain failure: ") (gain == 30.0)
   log "gain node tests passed"
 
-analyserNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
+analyserNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT, arrayBuffer :: ARRAY_BUFFER | eff) Unit)
 analyserNodeTests ctx = do
   analyser <- createAnalyser ctx
   size <- fftSize analyser
@@ -111,7 +111,7 @@ analyserNodeTests ctx = do
   _ <- getByteTimeDomainData analyser buffer
   log "analyser node tests passed"
 
-stereoPannerNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+stereoPannerNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 stereoPannerNodeTests ctx = do
   stereoPannerNode <- createStereoPanner ctx
   panParam <- pan stereoPannerNode
@@ -121,7 +121,7 @@ stereoPannerNodeTests ctx = do
   _ <- assert' ("incorrect pan value: " <> (show panVal)) (panVal == -0.75)
   log "stereo panner node tests passed"
 
-dynamicsCompressorNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+dynamicsCompressorNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 dynamicsCompressorNodeTests ctx = do
   compressorNode <- createDynamicsCompressor ctx
   thresholdParam <- threshold compressorNode
@@ -153,7 +153,7 @@ dynamicsCompressorNodeTests ctx = do
   _ <- assert' ("get reduction failure" <> (show reduction')) (reduction' == 0.0)
   log "dynamics compressor node tests passed"
 
-convolverNodeTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+convolverNodeTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 convolverNodeTests ctx = do
   convolverNode <- createConvolver ctx
   _ <- normalize true convolverNode
@@ -161,7 +161,7 @@ convolverNodeTests ctx = do
   _ <- assert' "normalize failed" (normalized == true)
   log "convolver node tests passed"
 
-connectionTests :: ∀ eff. AudioContext -> (Eff (wau :: WebAudio, console :: CONSOLE, assert :: ASSERT | eff) Unit)
+connectionTests :: ∀ eff. AudioContext -> (Eff (audio :: AUDIO, console :: CONSOLE, assert :: ASSERT | eff) Unit)
 connectionTests ctx = do
   modulator <- createOscillator ctx
   modGainNode <- createGain ctx
