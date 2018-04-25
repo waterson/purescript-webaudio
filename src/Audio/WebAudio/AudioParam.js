@@ -30,6 +30,18 @@ exports.setValueAtTime = function(value) {
   };
 };
 
+exports.setTargetAtTime = function(value) {
+  return function(startTime) {
+    return function(timeConstant) {
+      return function(param) {
+        return function() {
+          param.setTargetAtTime(value, startTime, timeConstant);
+        };
+      };
+    };
+  };
+};
+
 
 exports.linearRampToValueAtTime = function(value) {
   return function(endTime) {
