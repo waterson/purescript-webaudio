@@ -19,3 +19,11 @@ exports.startBufferSource = function(when) {
     };
   };
 };
+
+exports.stopBufferSource = function(when) {
+  return function(src) {
+    return function() {
+      src.stop(when);
+    };
+  };
+};

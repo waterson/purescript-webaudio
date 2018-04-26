@@ -3,8 +3,7 @@ module SquareWave where
 
 import Prelude
 
-import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode, AudioContextState(..))
-import Audio.WebAudio.AudioNode (connect)
+import Audio.WebAudio.Types (AUDIO, AudioContext, GainNode, OscillatorNode, AudioContextState(..), connect)
 import Audio.WebAudio.BaseAudioContext (createGain, createOscillator, currentTime, destination, newAudioContext, resume, state, suspend)
 import Audio.WebAudio.AudioParam (getValue, setValue, setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
@@ -23,7 +22,6 @@ import DOM.Node.ParentNode (querySelector)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (wrap)
 import Unsafe.Coerce (unsafeCoerce)
-
 
 beep :: ∀ e. AudioContext
      -> OscillatorNode
@@ -81,15 +79,14 @@ main = do
   suspend ctx
 
   let id = unsafeCoerce (newRef 0) :: Ref IntervalId
-  
+
   doc <- map htmlDocumentToParentNode (window >>= document)
   play <- querySelector (wrap "#play") doc
-  case play of 
+  case play of
     Just e -> addEventListener (wrap "click") (eventListener \_ -> controls id ctx osc g) false (unsafeCoerce e :: EventTarget)
     Nothing -> throw "No 'play' button"
   stop <- querySelector (wrap "#stop") doc
-  case stop of 
+  case stop of
     Just e -> addEventListener (wrap "click") (eventListener \_ -> controls id ctx osc g) false (unsafeCoerce e :: EventTarget)
     Nothing -> throw "No 'stop' button"
   pure unit
-

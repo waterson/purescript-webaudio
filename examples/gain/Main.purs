@@ -4,10 +4,9 @@ import Prelude
 
 import Audio.WebAudio.BaseAudioContext (createGain, currentTime, destination, newAudioContext, sampleRate)
 import Audio.WebAudio.AudioContext (createMediaElementSource)
-import Audio.WebAudio.AudioNode (connect)
 import Audio.WebAudio.AudioParam (setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
-import Audio.WebAudio.Types (AUDIO)
+import Audio.WebAudio.Types (connect, AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Exception (EXCEPTION, throw)
