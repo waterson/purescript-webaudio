@@ -4,8 +4,7 @@ import Prelude
 
 import Audio.WebAudio.AudioBufferSourceNode (setBuffer, startBufferSource)
 import Audio.WebAudio.BaseAudioContext (createBufferSource, decodeAudioData, destination, newAudioContext)
-import Audio.WebAudio.AudioNode (connect)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AUDIO)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, connect, AUDIO)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (warn)
 import DOM (DOM)

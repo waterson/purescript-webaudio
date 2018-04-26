@@ -5,14 +5,18 @@
   "main": "",
   "scripts": {
     "postinstall": "bower install",
-    "build:clean": "rm -rf dist output examples/*/output",
+    "build:clean": "rm -rf dist output examples/*/output test/*/output",
     "build": "pulp build",
     "build:example:square-wave": "pulp browserify --main SquareWave --to examples/square-wave/output/bundle.js -I examples/square-wave",
     "exec:example:square-wave": "cd examples/square-wave/ && python -m SimpleHTTPServer 8000",
     "build:example:gain": "pulp build --main Gain --to examples/gain/output/bundle.js -I examples/gain",
     "exec:example:gain": "cd examples/gain/ && python -m SimpleHTTPServer 8000",
     "build:example:decode": "pulp build --main DecodeAudio --to examples/decode/output/bundle.js -I examples/decode",
-    "exec:example:decode": "cd examples/decode/ && python -m SimpleHTTPServer 8000"
+    "exec:example:decode": "cd examples/decode/ && python -m SimpleHTTPServer 8000",
+    "build:example:decode-async": "pulp build --main DecodeAsync --to examples/decodeAsync/output/bundle.js -I examples/decodeAsync",
+    "exec:example:decode-async": "cd examples/decodeAsync/ && python -m SimpleHTTPServer 8000",
+    "build:test:props": "pulp build --main TestProps --to test/props/output/bundle.js -I test/props",
+    "exec:test:props": "cd test/props/ && python -m SimpleHTTPServer 8000"
   },
   "private": true,
   "author": {
@@ -24,6 +28,11 @@
       "name": "Alex Kelley",
       "email": "",
       "url": "https://github.com/adkelley"
+    },
+    {
+      "name": "John Watson",
+      "email": "",
+      "url": "https://github.com/newlandsvalley"
     }
   ],
   "license": "MIT",

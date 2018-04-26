@@ -1,12 +1,13 @@
 module Audio.WebAudio.Oscillator
-  ( OscillatorType(..), readOscillatorType, frequency
-  , oscillatorType, setOscillatorType, startOscillator
+  ( OscillatorType(..), readOscillatorType, frequency, detune, setFrequency
+  , setDetune, oscillatorType, setOscillatorType, startOscillator
   , stopOscillator) where
 
 import Prelude
 import Control.Monad.Eff (Eff)
 import Audio.WebAudio.Types (AudioParam, OscillatorNode, AUDIO)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
+import Audio.WebAudio.AudioParam (setValue)
 
 data OscillatorType = Sine | Square | Sawtooth | Triangle | Custom
 
@@ -25,8 +26,22 @@ readOscillatorType "triangle" = Triangle
 readOscillatorType "custom"   = Custom
 readOscillatorType _          = Sine
 
-frequency :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
+derive instance eqOscillatorType :: Eq OscillatorType
+derive instance ordOscillatorType :: Ord OscillatorType
+
+frequency :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO| eff) AudioParam)
 frequency = unsafeGetProp "frequency"
+
+setFrequency :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO| eff) Unit)
+setFrequency num node =
+  setValue num =<< frequency node
+
+detune :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) AudioParam)
+detune = unsafeGetProp "detune"
+
+setDetune :: ∀ eff. Number -> OscillatorNode -> (Eff (audio :: AUDIO | eff) Unit)
+setDetune num node =
+  setValue num =<< detune node
 
 oscillatorType :: ∀ eff. OscillatorNode -> (Eff (audio :: AUDIO | eff) OscillatorType)
 oscillatorType n = readOscillatorType <$> unsafeGetProp "type" n

@@ -6,7 +6,7 @@
     "Chris Waterson <waterson@maubi.net>",
     "Sean Seefried <sean.seefried@gmail.com>",
     "Alex Kelley <github.com/adkelley>",
-    "John Watson <>"
+    "John Watson <github.com/newlandsvalley>"
   ],
   "license": "MIT",
   "private": true,
@@ -26,13 +26,20 @@
     "purescript-tuples": "^4.1.0",
     "purescript-strings": "^3.3.1",
     "purescript-eff": "^3.1.0",
-    "purescript-arraybuffer-types": "^1.0.0"
+    "purescript-aff": "^4.0.0",
+    "purescript-arraybuffer-types": "^2.0.0",
+    "jacereda/purescript-arraybuffer": "^6.0.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0",
     "purescript-dom": "^4.16.0",
     "purescript-js-timers": "^3.0.0",
+    "purescript-affjax": "^5.0.0",
+    "purescript-assert": "^3.0.0",
     "purescript-refs": "^3.0.0"
+  },
+  "resolutions": {
+    "purescript-arraybuffer-types": "^2.0.0"
   }
 }
