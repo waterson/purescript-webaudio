@@ -24,11 +24,7 @@ loadSoundBuffer :: AudioContext
                 -> Aff (Either ResponseFormatError AudioBuffer)
 loadSoundBuffer ctx fileName = do
   res <- get arrayBuffer fileName
-  case res.body of
-    Left e -> pure $ Left e
-    Right v -> do
-      buffer <- decodeAudioDataAsync ctx v
-      pure $ Right buffer
+  traverse (decodeAudioDataAsync ctx) res.body
 
 -- | load and decode an array of audio buffers from a set of resources
 loadSoundBuffers :: AudioContext
