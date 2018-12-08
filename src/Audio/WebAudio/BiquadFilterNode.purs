@@ -6,7 +6,7 @@ import Audio.WebAudio.Types
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 import Prelude (class Show, class Eq, class Ord, Unit, show, (<$>))
 
-import Control.Monad.Eff (Eff)
+import Effect (Effect)
 
 data BiquadFilterType =
     Lowpass
@@ -42,17 +42,17 @@ readBiquadFilterType "notch"     = Notch
 readBiquadFilterType "allpass"   = Allpass
 readBiquadFilterType _           = Lowpass
 
-filterType :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) BiquadFilterType)
+filterType :: BiquadFilterNode -> Effect BiquadFilterType
 filterType n = readBiquadFilterType <$> unsafeGetProp "type" n
 
-setFilterType :: ∀ eff. BiquadFilterType -> BiquadFilterNode -> (Eff (audio :: AUDIO | eff) Unit)
+setFilterType :: BiquadFilterType -> BiquadFilterNode -> Effect Unit
 setFilterType t n = unsafeSetProp "type" n (show t)
 
-filterFrequency :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)
+filterFrequency :: BiquadFilterNode -> Effect AudioParam
 filterFrequency = unsafeGetProp "frequency"
 
-quality :: ∀ eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)
+quality :: BiquadFilterNode -> Effect AudioParam
 quality = unsafeGetProp "Q"
 
 foreign import gain
-  :: forall eff. BiquadFilterNode -> (Eff (audio :: AUDIO | eff) AudioParam)
+  :: BiquadFilterNode -> Effect AudioParam

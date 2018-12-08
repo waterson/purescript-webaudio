@@ -1,17 +1,17 @@
 module Audio.WebAudio.ConvolverNode (setBuffer, normalize, isNormalized) where
 
 import Prelude (Unit)
-import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioBuffer, ConvolverNode, AUDIO)
+import Effect (Effect)
+import Audio.WebAudio.Types (AudioBuffer, ConvolverNode)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 
 foreign import setBuffer
-  :: ∀ eff. AudioBuffer
+  ::  AudioBuffer
   -> ConvolverNode
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
-normalize :: ∀ eff. Boolean -> ConvolverNode -> (Eff (audio :: AUDIO | eff) Unit)
+normalize :: Boolean -> ConvolverNode -> Effect Unit
 normalize l n = unsafeSetProp "normalize" n l
 
-isNormalized :: ∀ eff. ConvolverNode -> (Eff (audio :: AUDIO | eff) Boolean)
+isNormalized :: ConvolverNode -> Effect Boolean
 isNormalized = unsafeGetProp "normalize"
