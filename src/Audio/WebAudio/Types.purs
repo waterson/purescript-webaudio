@@ -4,14 +4,13 @@ module Audio.WebAudio.Types
   , AudioParam, DestinationNode, BiquadFilterNode
   , GainNode, MediaElementAudioSourceNode
   , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode
-  , DynamicsCompressorNode, ConvolverNode, AUDIO
+  , DynamicsCompressorNode, ConvolverNode
   , AudioContextState(..), AudioContextPlaybackCategory(..)
   , Value, Seconds
   , connect, disconnect, connectParam) where
 
-import Control.Monad.Eff (kind Effect, Eff)
+import Effect (Effect)
 import Prelude (class Show, class Eq, Unit, pure, unit)
-foreign import data AUDIO :: Effect
 
 foreign import data AudioBuffer :: Type
 foreign import data AudioBufferSourceNode :: Type
@@ -69,9 +68,9 @@ instance audioNodeDynamicsCConvolverNode :: RawAudioNode ConvolverNode
 -- | a web audio node that is connectable/disconnectable from another node
 -- | or whose parameter(s) may be connectable from another node
 class Connectable target where
-  connect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (audio :: AUDIO | eff) Unit)
-  disconnect ::  ∀ eff source. RawAudioNode source => source -> target -> (Eff (audio :: AUDIO | eff) Unit)
-  connectParam  :: ∀ eff source. RawAudioNode source => source -> target -> String -> (Eff (audio :: AUDIO| eff) Unit)
+  connect ::  ∀ source. RawAudioNode source => source -> target -> Effect Unit
+  disconnect ::  ∀ source. RawAudioNode source => source -> target -> Effect Unit
+  connectParam  :: ∀ source. RawAudioNode source => source -> target -> String -> Effect Unit
 
 instance connectableGainNode :: Connectable GainNode where
   connect = nodeConnect
@@ -154,15 +153,15 @@ instance connectableAudioNode :: Connectable AudioNode where
   connectParam s (Destination n) p = pure unit
 
 -- foreign import connect
-foreign import nodeConnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
+foreign import nodeConnect  :: ∀ m n. RawAudioNode m => RawAudioNode n => m
   -> n
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
 -- There are multiple disconnect options - this one seems the most useful
 -- foreign import disconnectRawA
-foreign import nodeDisconnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
+foreign import nodeDisconnect  :: ∀ m n. RawAudioNode m => RawAudioNode n => m
   -> n
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
 -- | Connect a source Node to a parameter on a destination Node. 
 -- | the String parameter names an audio parameter on the target node, n
@@ -174,10 +173,10 @@ foreign import nodeDisconnect  :: ∀ m n eff. RawAudioNode m => RawAudioNode n 
 -- | The Web-Audio JavaScript requires the original parameter, not a copy
 -- |
 -- | This is very unsafe.  The parameter must exist on the target.
-foreign import unsafeConnectParam  :: ∀ m n eff. RawAudioNode m => RawAudioNode n => m
+foreign import unsafeConnectParam  :: ∀ m n. RawAudioNode m => RawAudioNode n => m
   -> n
   -> String
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
 data AudioNode =
     Gain GainNode

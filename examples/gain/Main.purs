@@ -6,29 +6,23 @@ import Audio.WebAudio.BaseAudioContext (createGain, currentTime, destination, ne
 import Audio.WebAudio.AudioContext (createMediaElementSource)
 import Audio.WebAudio.AudioParam (setValueAtTime)
 import Audio.WebAudio.GainNode (gain)
-import Audio.WebAudio.Types (connect, AUDIO)
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, logShow)
-import Control.Monad.Eff.Exception (EXCEPTION, throw)
-import DOM (DOM)
-import DOM.HTML (window)
-import DOM.HTML.Types (htmlDocumentToNonElementParentNode)
-import DOM.HTML.Window (document)
-import DOM.Node.NonElementParentNode (getElementById)
+import Audio.WebAudio.Types (connect)
+import Effect (Effect)
+import Effect.Console (logShow)
+import Effect.Exception (throw)
+import Web.HTML (window)
+import Web.HTML.HTMLDocument (toNonElementParentNode) as HTMLDocument
+import Web.HTML.Window (document)
+import Web.DOM.NonElementParentNode (getElementById)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (wrap)
 
 -- | 3 secs after the audio begins playing, set the value (i.e., volume)
 -- | of the gain node to 0.3 (i.e., a 70% reduction)
 
-main :: Eff ( dom :: DOM
-            , audio :: AUDIO
-            , console :: CONSOLE
-            , exception :: EXCEPTION
-            ) Unit
+main :: Effect Unit
 main = do
-  doc <- map htmlDocumentToNonElementParentNode (window >>= document)
-  noise <- getElementById (wrap "noise") doc
+  doc <- map HTMLDocument.toNonElementParentNode (window >>= document)
+  noise <- getElementById "noise" doc
   case noise of
     Just el -> void do
       cx <- newAudioContext

@@ -3,39 +3,39 @@ module Audio.WebAudio.AudioBufferSourceNode
   , loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd  ) where
 
 import Prelude
-import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AUDIO)
+import Effect (Effect)
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 
 foreign import setBuffer
-  :: ∀ eff. AudioBuffer
+  :: AudioBuffer
   -> AudioBufferSourceNode
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
 foreign import startBufferSource
-  :: ∀ eff. Number
+  :: Number
   -> AudioBufferSourceNode
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
 foreign import stopBufferSource
-  :: ∀ eff. Number
+  :: Number
   -> AudioBufferSourceNode
-  -> (Eff (audio :: AUDIO | eff) Unit)
+  -> Effect Unit
 
-loop :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Boolean)
+loop :: AudioBufferSourceNode -> Effect Boolean
 loop = unsafeGetProp "loop"
 
-setLoop :: ∀ eff. Boolean -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
+setLoop :: Boolean -> AudioBufferSourceNode -> Effect Unit
 setLoop l n = unsafeSetProp "loop" n l
 
-loopStart :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Number)
+loopStart :: AudioBufferSourceNode -> Effect Number
 loopStart = unsafeGetProp "loopStart"
 
-setLoopStart :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
+setLoopStart :: Number -> AudioBufferSourceNode -> Effect Unit
 setLoopStart l n = unsafeSetProp "loopStart" n l
 
-loopEnd :: ∀ eff. AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Number)
+loopEnd :: AudioBufferSourceNode -> Effect Number
 loopEnd = unsafeGetProp "loopEnd"
 
-setLoopEnd :: ∀ eff. Number -> AudioBufferSourceNode -> (Eff (audio :: AUDIO | eff) Unit)
+setLoopEnd :: Number -> AudioBufferSourceNode -> Effect Unit
 setLoopEnd l n = unsafeSetProp "loopEnd" n l

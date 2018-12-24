@@ -4,26 +4,23 @@ module Audio.WebAudio.AudioParam
   ) where
 
 import Prelude (Unit)
-import Control.Monad.Eff (Eff)
-import Audio.WebAudio.Types (AudioParam, AUDIO, Value, Seconds)
+import Effect (Effect)
+import Audio.WebAudio.Types (AudioParam, Value, Seconds)
 
-foreign import setValue
-  :: ∀ eff. Value -> AudioParam -> (Eff (audio :: AUDIO | eff) Unit)
+foreign import setValue :: Value -> AudioParam -> Effect Unit
 
-foreign import setValueAtTime
-  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+foreign import setValueAtTime :: Value -> Seconds -> AudioParam -> Effect Value
 
 foreign import setTargetAtTime
-  :: ∀ eff. Value -> Seconds -> Seconds -> AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+  :: Value -> Seconds -> Seconds -> AudioParam -> Effect Value
 
-foreign import getValue
-  :: ∀ eff. AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+foreign import getValue :: AudioParam -> Effect Value
 
 foreign import linearRampToValueAtTime
-  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+  :: Value -> Seconds -> AudioParam -> Effect Value
 
 foreign import exponentialRampToValueAtTime
-  :: ∀ eff. Value -> Seconds -> AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+  :: Value -> Seconds -> AudioParam -> Effect Value
 
 foreign import cancelScheduledValues
-  :: ∀ eff. Value -> AudioParam -> (Eff (audio :: AUDIO | eff) Value)
+  :: Value -> AudioParam -> Effect Value
